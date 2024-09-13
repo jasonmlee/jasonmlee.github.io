@@ -1,9 +1,15 @@
 ---
 title: "Jason Lee"
+about:
+  template: jolla
+  image: "img/IMG_5058.jpg"
+  links:
+    - icon: linkedin
+      text: linkedin
+      href: https://www.linkedin.com/in/jason-lee-cfa-41773099/
+    - icon: github
+      text: Github
+      href: https://github.com/jasonmlee
 ---
 
-Hi I'm Jason. I like working with financial data.
-
-website:
-  favicon: "img/LI-In-Bug.png"
-  site-url: https://www.linkedin.com/in/jason-lee-cfa-41773099/
+I'm a Data Analyst with 5 years of experience working in the banking industry. I hold a degree in accounting in finance from the University of Exeter and I'm a Chartered Financial Analyst (CFA).
