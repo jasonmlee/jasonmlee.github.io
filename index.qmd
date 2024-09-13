@@ -1,7 +1,9 @@
 ---
-title: "jasonmlee.github.io"
+title: "Jason Lee"
 ---
 
-This is a Quarto website.
+Hi I'm Jason. I like working with financial data.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+website:
+  favicon: "img/LI-In-Bug.png"
+  site-url: https://www.linkedin.com/in/jason-lee-cfa-41773099/
