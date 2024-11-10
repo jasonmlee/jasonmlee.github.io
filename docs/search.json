@@ -7,6 +7,41 @@
     "text": "About this site"
   },
   {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nTitle\n\n\nReading Time\n\n\n\n\n\n\nProject 1\n\n\n1 min\n\n\n\n\nProject 2\n\n\n1 min\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/project_1.html",
+    "href": "posts/project_1.html",
+    "title": "Project 1",
+    "section": "",
+    "text": "import pandas as pd\nimport yfinance as yf\nimport seaborn as sns\nimport matplotlib.pyplot as plt"
+  },
+  {
+    "objectID": "posts/project_1.html#downloading-stock-data-from-yfinance",
+    "href": "posts/project_1.html#downloading-stock-data-from-yfinance",
+    "title": "Project 1",
+    "section": "Downloading Stock Data from yfinance",
+    "text": "Downloading Stock Data from yfinance\n\nuniverse = pd.read_csv(\"../data/universe.csv\")\n\n# Date range\nstart = '2021-01-01'\nend = '2024-09-22'\n\n# Tickers of assets\nassets = universe['Ticker'].to_list()\nassets.sort()\n\n# Downloading data\ndata = yf.download(assets, start = start, end = end)\ndata = data.loc[:, ('Adj Close')]\ndata.columns = assets\n\ndata\n\n[                       0%                       ][                       0%                       ][                       0%                       ][**********            20%                       ]  4 of 20 completed[**********            20%                       ]  4 of 20 completed[**********            20%                       ]  4 of 20 completed[*****************     35%                       ]  7 of 20 completed[*******************   40%                       ]  8 of 20 completed[**********************45%                       ]  9 of 20 completed[**********************50%                       ]  10 of 20 completed[**********************50%                       ]  10 of 20 completed[**********************60%****                   ]  12 of 20 completed[**********************60%****                   ]  12 of 20 completed[**********************70%*********              ]  14 of 20 completed[**********************75%***********            ]  15 of 20 completed[**********************80%*************          ]  16 of 20 completed[**********************85%****************       ]  17 of 20 completed[**********************90%******************     ]  18 of 20 completed[**********************95%*********************  ]  19 of 20 completed[*********************100%***********************]  20 of 20 completed\n\n\n\n\n\n\n\n\n\nACWX\nBND\nDBC\nEWJ\nFLIN\nFXI\nGLD\nINDA\nIWV\nQQQ\nREET\nTIP\nVCN.TO\nVEU\nVGK\nVGT\nVNQ\nVTI\nVXF\nXIU.TO\n\n\nDate\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2021-01-04 00:00:00+00:00\n48.394180\n79.351013\n13.851584\n62.841763\n25.202034\n43.004211\n182.330002\n37.786377\n210.092850\n302.171844\n20.821735\n109.499985\n31.491247\n52.468719\n54.070847\n338.166534\n71.616821\n181.573746\n155.058090\n23.462931\n\n\n2021-01-05 00:00:00+00:00\n49.102123\n79.215843\n14.240034\n63.425381\n25.589771\n44.174526\n182.869995\n38.470676\n211.873886\n304.663025\n20.911259\n109.465721\n31.813681\n53.273865\n54.558216\n340.946381\n71.721420\n183.040573\n157.342148\n23.686638\n\n\n2021-01-06 00:00:00+00:00\n49.310871\n78.864464\n14.258984\n64.178429\n25.531517\n43.663670\n179.899994\n38.348816\n213.502518\n300.442780\n21.081337\n109.140099\n32.091343\n53.560131\n55.205074\n335.289459\n71.843422\n184.687195\n160.734772\n23.919298\n\n\n2021-01-07 00:00:00+00:00\n49.574081\n78.702309\n14.325304\n64.046638\n25.537245\n43.970184\n179.479996\n38.170712\n216.997879\n307.711060\n20.929159\n109.071548\n32.467510\n53.748005\n55.373436\n344.834351\n71.703957\n187.649231\n164.089188\n24.205652\n\n\n2021-01-08 00:00:00+00:00\n50.245720\n78.630226\n14.438997\n65.223274\n26.052954\n44.880421\n173.339996\n39.070614\n218.150284\n311.667542\n21.072392\n108.643112\n32.476467\n54.508415\n55.630417\n347.351807\n72.401237\n188.557739\n164.347198\n24.241447\n\n\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n\n\n2024-09-16 00:00:00+00:00\n55.380001\n75.403915\n21.820000\n70.540001\n41.669998\n26.010000\n238.660004\n58.130001\n319.612152\n472.575897\n26.916346\n110.728935\n48.248920\n61.065987\n70.090881\n565.020874\n98.143471\n276.915710\n177.881927\n36.000000\n\n\n2024-09-17 00:00:00+00:00\n55.189999\n75.304230\n21.969999\n69.709999\n41.540001\n26.340000\n237.339996\n57.959999\n319.951019\n472.825562\n26.718212\n110.688972\n48.164440\n60.826939\n69.831505\n564.731262\n97.459229\n277.194824\n178.799469\n35.910000\n\n\n2024-09-18 00:00:00+00:00\n55.049999\n75.074944\n21.830000\n69.389999\n41.279999\n26.190001\n235.509995\n57.660000\n318.974243\n470.778442\n26.638960\n110.279312\n48.025295\n60.647655\n69.661919\n562.125305\n97.340240\n276.497009\n178.859299\n35.779999\n\n\n2024-09-19 00:00:00+00:00\n56.139999\n75.074944\n22.219999\n71.230003\n41.599998\n27.129999\n239.169998\n58.110001\n324.555786\n482.681702\n26.728119\n110.609032\n48.562000\n61.813000\n70.869003\n578.749512\n97.360069\n281.182526\n182.429703\n36.189999\n\n\n2024-09-20 00:00:00+00:00\n55.730000\n75.064980\n22.219999\n71.269997\n42.250000\n27.150000\n242.210007\n58.740002\n323.688660\n481.763000\n26.579519\n110.459160\n48.570000\n61.419998\n69.809998\n576.722595\n96.973328\n280.594360\n181.222961\n36.200001\n\n\n\n\n954 rows × 20 columns"
+  },
+  {
+    "objectID": "posts/project_1.html#calculating-stock-returns-and-correlation",
+    "href": "posts/project_1.html#calculating-stock-returns-and-correlation",
+    "title": "Project 1",
+    "section": "Calculating stock returns and correlation",
+    "text": "Calculating stock returns and correlation\n\n#Calculating Returns\nreturns = data.pct_change().dropna()\n\ncorrelation_matrix = returns.corr()\n\n# Plot the heatmap\nplt.figure(figsize=(8, 6))\nsns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=\".2f\")\nplt.title('Correlation Matrix of Selected Stocks')\nplt.show()\n\n/var/folders/49/wztx6mrd3qd9qcgjnk_y96040000gn/T/ipykernel_31224/3697333953.py:2: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.\n  returns = data.pct_change().dropna()"
+  },
+  {
+    "objectID": "posts/project_2.html",
+    "href": "posts/project_2.html",
+    "title": "Project 2",
+    "section": "",
+    "text": "import pandas as pd\nimport yfinance as yf\nimport seaborn as sns\n\nmsft = yf.Ticker(\"MSFT\")\nhist = msft.history(period=\"1mo\")\nhist = hist.reset_index()\n\nsns.lineplot(data = hist , x = \"Date\", y = \"Close\")"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Jason Lee",

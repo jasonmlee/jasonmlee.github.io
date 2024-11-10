@@ -2,11 +2,11 @@
 title: "Jason Lee"
 about:
   template: jolla
-  image: "img/IMG_5058.jpg"
+  image: "img/UBC_20241011_PJ_2457.jpg"
   links:
     - icon: linkedin
       text: linkedin
-      href: https://www.linkedin.com/in/jason-lee-cfa-41773099/
+      href: https://www.linkedin.com/in/jason-lee-cfa/
     - icon: github
       text: Github
       href: https://github.com/jasonmlee

@@ -1,0 +1,21 @@
+﻿Ticker,Name,Asset Class
+BND,Vanguard Total Bond Market ETF,Bonds
+TIP,iShares TIPS Bond ETF,Bonds
+VNQ,Vanguard Real Estate ETF,REITs
+REET,iShares Global REIT ETF,REITs
+DBC,Invesco DB Commodity Index Tracking Fund,Commodities
+GLD,SPDR Gold Shares,Commodities
+VTI,Vanguard Total Stock Market ETF,US Stocks
+IWV,iShares Russell 3000 ETF,US Stocks
+VEU,Vanguard FTSE All-World ex-US ETF,International Stocks
+ACWX,iShares MSCI ACWI ex U.S. ETF,International Stocks
+XIU.TO,iShares S&P/TSX 60 ETF,Canadian Stocks
+VCN.TO,Vanguard FTSE Canada All Cap Index ETF,Canadian Stocks
+EWJ,iShares MSCI Japan ETF,Japanese Stocks
+VGK,Vanguard FTSE Japan ETF,Japanese Stocks
+QQQ,Invesco QQQ ETF,Tech Stocks
+VGT,Vanguard Information Technology ETF,Tech Stocks
+FXI,iShares China Large-Cap ETF,Chinese Stocks
+VXF,Vanguard FTSE China 50 ETF,Chinese Stocks
+INDA,iShares MSCI India ETF,Indian Stocks
+FLIN,Franklin FTSE India ETF,Indian Stocks

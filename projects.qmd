@@ -1,3 +1,8 @@
 ---
 title: "Projects"
+listing: 
+    contents: posts
+    type: table
+    categories: true
+    fields: [title, reading-time]
 ---
