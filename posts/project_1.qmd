@@ -1,5 +1,5 @@
 ---
-title: "Project 1"
+title: "Calculating Stock Correlations"
 reading_time: "1 min"
 ---
 
@@ -42,7 +42,7 @@ returns = data.pct_change().dropna()
 correlation_matrix = returns.corr()
 
 # Plot the heatmap
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(20, 20))
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
 plt.title('Correlation Matrix of Selected Stocks')
 plt.show()

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Project 1 – Jason Lee</title>
+<title>Calculating Stock Correlations – Jason Lee</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -163,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Project 1</h1>
+<h1 class="title">Calculating Stock Correlations</h1>
 </div>
 
 
@@ -180,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="c96e9765" class="cell" data-execution_count="1">
+<div id="0cfff68f" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yfinance <span class="im">as</span> yf</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -188,7 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="downloading-stock-data-from-yfinance" class="level2">
 <h2 class="anchored" data-anchor-id="downloading-stock-data-from-yfinance">Downloading Stock Data from yfinance</h2>
-<div id="ca847fd6" class="cell" data-execution_count="2">
+<div id="5c01f43a" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>universe <span class="op">=</span> pd.read_csv(<span class="st">"../data/universe.csv"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Date range</span></span>
@@ -206,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>[                       0%                       ][                       0%                       ][                       0%                       ][**********            20%                       ]  4 of 20 completed[**********            20%                       ]  4 of 20 completed[**********            20%                       ]  4 of 20 completed[*****************     35%                       ]  7 of 20 completed[*******************   40%                       ]  8 of 20 completed[**********************45%                       ]  9 of 20 completed[**********************50%                       ]  10 of 20 completed[**********************50%                       ]  10 of 20 completed[**********************60%****                   ]  12 of 20 completed[**********************60%****                   ]  12 of 20 completed[**********************70%*********              ]  14 of 20 completed[**********************75%***********            ]  15 of 20 completed[**********************80%*************          ]  16 of 20 completed[**********************85%****************       ]  17 of 20 completed[**********************90%******************     ]  18 of 20 completed[**********************95%*********************  ]  19 of 20 completed[*********************100%***********************]  20 of 20 completed</code></pre>
+<pre><code>[                       0%                       ][                       0%                       ][*******               15%                       ]  3 of 20 completed[**********            20%                       ]  4 of 20 completed[**********            20%                       ]  4 of 20 completed[**************        30%                       ]  6 of 20 completed[*****************     35%                       ]  7 of 20 completed[*******************   40%                       ]  8 of 20 completed[**********************45%                       ]  9 of 20 completed[**********************50%                       ]  10 of 20 completed[**********************55%*                      ]  11 of 20 completed[**********************60%****                   ]  12 of 20 completed[**********************60%****                   ]  12 of 20 completed[**********************70%*********              ]  14 of 20 completed[**********************70%*********              ]  14 of 20 completed[**********************80%*************          ]  16 of 20 completed[**********************85%****************       ]  17 of 20 completed[**********************90%******************     ]  18 of 20 completed[**********************95%*********************  ]  19 of 20 completed[*********************100%***********************]  20 of 20 completed</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
@@ -265,117 +265,117 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2021-01-04 00:00:00+00:00</td>
 <td>48.394180</td>
-<td>79.351013</td>
-<td>13.851584</td>
-<td>62.841763</td>
-<td>25.202034</td>
-<td>43.004211</td>
+<td>79.351006</td>
+<td>13.851583</td>
+<td>62.841766</td>
+<td>25.202032</td>
+<td>43.004219</td>
 <td>182.330002</td>
 <td>37.786377</td>
-<td>210.092850</td>
+<td>210.092834</td>
 <td>302.171844</td>
-<td>20.821735</td>
-<td>109.499985</td>
-<td>31.491247</td>
-<td>52.468719</td>
+<td>20.821743</td>
+<td>109.500000</td>
+<td>31.491253</td>
+<td>52.468712</td>
 <td>54.070847</td>
-<td>338.166534</td>
-<td>71.616821</td>
-<td>181.573746</td>
-<td>155.058090</td>
-<td>23.462931</td>
+<td>338.166504</td>
+<td>71.616829</td>
+<td>181.573761</td>
+<td>155.058075</td>
+<td>23.462933</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">2021-01-05 00:00:00+00:00</td>
-<td>49.102123</td>
-<td>79.215843</td>
-<td>14.240034</td>
-<td>63.425381</td>
+<td>49.102116</td>
+<td>79.215851</td>
+<td>14.240035</td>
+<td>63.425377</td>
 <td>25.589771</td>
 <td>44.174526</td>
 <td>182.869995</td>
 <td>38.470676</td>
-<td>211.873886</td>
+<td>211.873901</td>
 <td>304.663025</td>
 <td>20.911259</td>
-<td>109.465721</td>
-<td>31.813681</td>
-<td>53.273865</td>
-<td>54.558216</td>
-<td>340.946381</td>
+<td>109.465706</td>
+<td>31.813688</td>
+<td>53.273861</td>
+<td>54.558212</td>
+<td>340.946472</td>
 <td>71.721420</td>
-<td>183.040573</td>
-<td>157.342148</td>
-<td>23.686638</td>
+<td>183.040558</td>
+<td>157.342178</td>
+<td>23.686642</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2021-01-06 00:00:00+00:00</td>
-<td>49.310871</td>
-<td>78.864464</td>
+<td>49.310879</td>
+<td>78.864449</td>
 <td>14.258984</td>
 <td>64.178429</td>
-<td>25.531517</td>
-<td>43.663670</td>
+<td>25.531513</td>
+<td>43.663673</td>
 <td>179.899994</td>
 <td>38.348816</td>
 <td>213.502518</td>
-<td>300.442780</td>
-<td>21.081337</td>
-<td>109.140099</td>
-<td>32.091343</td>
-<td>53.560131</td>
+<td>300.442719</td>
+<td>21.081339</td>
+<td>109.140106</td>
+<td>32.091339</td>
+<td>53.560135</td>
 <td>55.205074</td>
-<td>335.289459</td>
-<td>71.843422</td>
-<td>184.687195</td>
-<td>160.734772</td>
-<td>23.919298</td>
+<td>335.289398</td>
+<td>71.843437</td>
+<td>184.687210</td>
+<td>160.734787</td>
+<td>23.919302</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">2021-01-07 00:00:00+00:00</td>
 <td>49.574081</td>
-<td>78.702309</td>
+<td>78.702271</td>
 <td>14.325304</td>
-<td>64.046638</td>
+<td>64.046646</td>
 <td>25.537245</td>
-<td>43.970184</td>
+<td>43.970188</td>
 <td>179.479996</td>
 <td>38.170712</td>
-<td>216.997879</td>
-<td>307.711060</td>
+<td>216.997894</td>
+<td>307.710999</td>
 <td>20.929159</td>
 <td>109.071548</td>
 <td>32.467510</td>
-<td>53.748005</td>
-<td>55.373436</td>
+<td>53.748009</td>
+<td>55.373444</td>
 <td>344.834351</td>
-<td>71.703957</td>
+<td>71.703995</td>
 <td>187.649231</td>
 <td>164.089188</td>
-<td>24.205652</td>
+<td>24.205656</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2021-01-08 00:00:00+00:00</td>
 <td>50.245720</td>
-<td>78.630226</td>
+<td>78.630188</td>
 <td>14.438997</td>
-<td>65.223274</td>
-<td>26.052954</td>
-<td>44.880421</td>
+<td>65.223282</td>
+<td>26.052956</td>
+<td>44.880417</td>
 <td>173.339996</td>
 <td>39.070614</td>
 <td>218.150284</td>
-<td>311.667542</td>
-<td>21.072392</td>
+<td>311.667603</td>
+<td>21.072386</td>
 <td>108.643112</td>
-<td>32.476467</td>
+<td>32.476463</td>
 <td>54.508415</td>
-<td>55.630417</td>
-<td>347.351807</td>
-<td>72.401237</td>
-<td>188.557739</td>
-<td>164.347198</td>
-<td>24.241447</td>
+<td>55.630409</td>
+<td>347.351776</td>
+<td>72.401253</td>
+<td>188.557724</td>
+<td>164.347229</td>
+<td>24.241451</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">...</td>
@@ -525,25 +525,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="calculating-stock-returns-and-correlation" class="level2">
 <h2 class="anchored" data-anchor-id="calculating-stock-returns-and-correlation">Calculating stock returns and correlation</h2>
-<div id="1b5ec2ee" class="cell" data-execution_count="3">
+<div id="2868a070" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating Returns</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>returns <span class="op">=</span> data.pct_change().dropna()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>correlation_matrix <span class="op">=</span> returns.corr()</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the heatmap</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">20</span>))</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>sns.heatmap(correlation_matrix, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, fmt<span class="op">=</span><span class="st">".2f"</span>)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Correlation Matrix of Selected Stocks'</span>)</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/49/wztx6mrd3qd9qcgjnk_y96040000gn/T/ipykernel_31224/3697333953.py:2: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+<pre><code>/var/folders/49/wztx6mrd3qd9qcgjnk_y96040000gn/T/ipykernel_32248/4222160605.py:2: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   returns = data.pct_change().dropna()</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="project_1_files/figure-html/cell-4-output-2.png" width="639" height="543" class="figure-img"></p>
+<p><img src="project_1_files/figure-html/cell-4-output-2.png" width="1411" height="1540" class="figure-img"></p>
 </figure>
 </div>
 </div>
