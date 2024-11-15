@@ -1,7 +1,6 @@
 ---
 title: "Black Scholes Option Pricing Model"
+description: "An interactive app to calculate Black-Scholes prices"
 reading_time: "1 min"
+redirect: https://black-scholes-price-model.streamlit.app
 ---
-
-Link: 
-https://black-scholes-price-model.streamlit.app
