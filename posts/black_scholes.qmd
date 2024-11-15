@@ -1,0 +1,7 @@
+---
+title: "Black Scholes Option Pricing Model"
+reading_time: "1 min"
+---
+
+Link: 
+https://black-scholes-price-model.streamlit.app

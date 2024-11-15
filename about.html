@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Calculating Stock Correlations – Jason Lee</title>
+<title>About – Jason Lee</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,59 +20,25 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -100,12 +66,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -115,7 +78,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Jason Lee</span>
     </a>
   </div>
@@ -126,15 +89,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link active" href="./about.html" aria-current="page"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../projects.html"> 
+    <a class="nav-link" href="./projects.html"> 
 <span class="menu-text">Projects</span></a>
   </li>  
 </ul>
@@ -148,22 +111,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#downloading-stock-data-from-yfinance" id="toc-downloading-stock-data-from-yfinance" class="nav-link active" data-scroll-target="#downloading-stock-data-from-yfinance">Downloading Stock Data from yfinance</a></li>
-  <li><a href="#calculating-stock-returns-and-correlation" id="toc-calculating-stock-returns-and-correlation" class="nav-link" data-scroll-target="#calculating-stock-returns-and-correlation">Calculating stock returns and correlation</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Calculating Stock Correlations</h1>
+<h1 class="title">About</h1>
 </div>
 
 
@@ -180,377 +136,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="322c3b12" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yfinance <span class="im">as</span> yf</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<section id="downloading-stock-data-from-yfinance" class="level2">
-<h2 class="anchored" data-anchor-id="downloading-stock-data-from-yfinance">Downloading Stock Data from yfinance</h2>
-<div id="037b05ab" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>universe <span class="op">=</span> pd.read_csv(<span class="st">"../data/universe.csv"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Date range</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> <span class="st">'2021-01-01'</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>end <span class="op">=</span> <span class="st">'2024-09-22'</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Tickers of assets</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>assets <span class="op">=</span> universe[<span class="st">'Ticker'</span>].to_list()</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>assets.sort()</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Downloading data</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> yf.download(assets, start <span class="op">=</span> start, end <span class="op">=</span> end)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> data.loc[:, (<span class="st">'Adj Close'</span>)]</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>data.columns <span class="op">=</span> assets</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>[                       0%                       ][*****                 10%                       ]  2 of 20 completed[*****                 10%                       ]  2 of 20 completed[*****                 10%                       ]  2 of 20 completed[************          25%                       ]  5 of 20 completed[**************        30%                       ]  6 of 20 completed[*****************     35%                       ]  7 of 20 completed[*******************   40%                       ]  8 of 20 completed[**********************45%                       ]  9 of 20 completed[**********************50%                       ]  10 of 20 completed[**********************55%*                      ]  11 of 20 completed[**********************60%****                   ]  12 of 20 completed[**********************60%****                   ]  12 of 20 completed[**********************70%*********              ]  14 of 20 completed[**********************75%***********            ]  15 of 20 completed[**********************80%*************          ]  16 of 20 completed[**********************85%****************       ]  17 of 20 completed[**********************90%******************     ]  18 of 20 completed[**********************95%*********************  ]  19 of 20 completed[*********************100%***********************]  20 of 20 completed</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<div>
+<p>About this site</p>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">ACWX</th>
-<th data-quarto-table-cell-role="th">BND</th>
-<th data-quarto-table-cell-role="th">DBC</th>
-<th data-quarto-table-cell-role="th">EWJ</th>
-<th data-quarto-table-cell-role="th">FLIN</th>
-<th data-quarto-table-cell-role="th">FXI</th>
-<th data-quarto-table-cell-role="th">GLD</th>
-<th data-quarto-table-cell-role="th">INDA</th>
-<th data-quarto-table-cell-role="th">IWV</th>
-<th data-quarto-table-cell-role="th">QQQ</th>
-<th data-quarto-table-cell-role="th">REET</th>
-<th data-quarto-table-cell-role="th">TIP</th>
-<th data-quarto-table-cell-role="th">VCN.TO</th>
-<th data-quarto-table-cell-role="th">VEU</th>
-<th data-quarto-table-cell-role="th">VGK</th>
-<th data-quarto-table-cell-role="th">VGT</th>
-<th data-quarto-table-cell-role="th">VNQ</th>
-<th data-quarto-table-cell-role="th">VTI</th>
-<th data-quarto-table-cell-role="th">VXF</th>
-<th data-quarto-table-cell-role="th">XIU.TO</th>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">Date</th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2021-01-04 00:00:00+00:00</td>
-<td>48.394180</td>
-<td>79.117523</td>
-<td>13.851583</td>
-<td>62.841763</td>
-<td>25.202032</td>
-<td>43.004211</td>
-<td>182.330002</td>
-<td>37.786381</td>
-<td>210.092880</td>
-<td>302.171906</td>
-<td>20.821741</td>
-<td>109.379036</td>
-<td>31.491245</td>
-<td>52.468712</td>
-<td>54.070847</td>
-<td>338.166473</td>
-<td>71.616821</td>
-<td>181.573715</td>
-<td>155.058060</td>
-<td>23.462929</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">2021-01-05 00:00:00+00:00</td>
-<td>49.102116</td>
-<td>78.982788</td>
-<td>14.240035</td>
-<td>63.425373</td>
-<td>25.589769</td>
-<td>44.174522</td>
-<td>182.869995</td>
-<td>38.470680</td>
-<td>211.873901</td>
-<td>304.662994</td>
-<td>20.911257</td>
-<td>109.344818</td>
-<td>31.813679</td>
-<td>53.273861</td>
-<td>54.558208</td>
-<td>340.946411</td>
-<td>71.721420</td>
-<td>183.040558</td>
-<td>157.342117</td>
-<td>23.686640</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2021-01-06 00:00:00+00:00</td>
-<td>49.310875</td>
-<td>78.632431</td>
-<td>14.258984</td>
-<td>64.178436</td>
-<td>25.531515</td>
-<td>43.663673</td>
-<td>179.899994</td>
-<td>38.348816</td>
-<td>213.502502</td>
-<td>300.442780</td>
-<td>21.081341</td>
-<td>109.019577</td>
-<td>32.091335</td>
-<td>53.560135</td>
-<td>55.205074</td>
-<td>335.289429</td>
-<td>71.843430</td>
-<td>184.687195</td>
-<td>160.734787</td>
-<td>23.919304</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">2021-01-07 00:00:00+00:00</td>
-<td>49.574078</td>
-<td>78.470695</td>
-<td>14.325304</td>
-<td>64.046638</td>
-<td>25.537243</td>
-<td>43.970184</td>
-<td>179.479996</td>
-<td>38.170715</td>
-<td>216.997879</td>
-<td>307.711090</td>
-<td>20.929161</td>
-<td>108.951088</td>
-<td>32.467510</td>
-<td>53.748009</td>
-<td>55.373428</td>
-<td>344.834351</td>
-<td>71.703987</td>
-<td>187.649231</td>
-<td>164.089188</td>
-<td>24.205652</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2021-01-08 00:00:00+00:00</td>
-<td>50.245720</td>
-<td>78.398834</td>
-<td>14.438997</td>
-<td>65.223274</td>
-<td>26.052954</td>
-<td>44.880421</td>
-<td>173.339996</td>
-<td>39.070614</td>
-<td>218.150269</td>
-<td>311.667603</td>
-<td>21.072388</td>
-<td>108.523132</td>
-<td>32.476471</td>
-<td>54.508415</td>
-<td>55.630409</td>
-<td>347.351868</td>
-<td>72.401253</td>
-<td>188.557739</td>
-<td>164.347229</td>
-<td>24.241447</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2024-09-16 00:00:00+00:00</td>
-<td>55.380001</td>
-<td>75.182053</td>
-<td>21.820000</td>
-<td>70.540001</td>
-<td>41.669998</td>
-<td>26.010000</td>
-<td>238.660004</td>
-<td>58.130001</td>
-<td>319.612152</td>
-<td>472.575897</td>
-<td>26.916346</td>
-<td>110.606651</td>
-<td>48.248920</td>
-<td>61.065987</td>
-<td>70.090881</td>
-<td>565.020874</td>
-<td>98.143471</td>
-<td>276.915710</td>
-<td>177.881927</td>
-<td>36.000000</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">2024-09-17 00:00:00+00:00</td>
-<td>55.189999</td>
-<td>75.082664</td>
-<td>21.969999</td>
-<td>69.709999</td>
-<td>41.540001</td>
-<td>26.340000</td>
-<td>237.339996</td>
-<td>57.959999</td>
-<td>319.951019</td>
-<td>472.825562</td>
-<td>26.718212</td>
-<td>110.566734</td>
-<td>48.164440</td>
-<td>60.826939</td>
-<td>69.831505</td>
-<td>564.731262</td>
-<td>97.459229</td>
-<td>277.194824</td>
-<td>178.799469</td>
-<td>35.910000</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2024-09-18 00:00:00+00:00</td>
-<td>55.049999</td>
-<td>74.854050</td>
-<td>21.830000</td>
-<td>69.389999</td>
-<td>41.279999</td>
-<td>26.190001</td>
-<td>235.509995</td>
-<td>57.660000</td>
-<td>318.974243</td>
-<td>470.778442</td>
-<td>26.638960</td>
-<td>110.157524</td>
-<td>48.025295</td>
-<td>60.647655</td>
-<td>69.661919</td>
-<td>562.125305</td>
-<td>97.340240</td>
-<td>276.497009</td>
-<td>178.859299</td>
-<td>35.779999</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">2024-09-19 00:00:00+00:00</td>
-<td>56.139999</td>
-<td>74.854050</td>
-<td>22.219999</td>
-<td>71.230003</td>
-<td>41.599998</td>
-<td>27.129999</td>
-<td>239.169998</td>
-<td>58.110001</td>
-<td>324.555786</td>
-<td>482.681702</td>
-<td>26.728119</td>
-<td>110.486877</td>
-<td>48.562000</td>
-<td>61.813000</td>
-<td>70.869003</td>
-<td>578.749512</td>
-<td>97.360069</td>
-<td>281.182526</td>
-<td>182.429703</td>
-<td>36.189999</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2024-09-20 00:00:00+00:00</td>
-<td>55.730000</td>
-<td>74.844116</td>
-<td>22.219999</td>
-<td>71.269997</td>
-<td>42.250000</td>
-<td>27.150000</td>
-<td>242.210007</td>
-<td>58.740002</td>
-<td>323.688660</td>
-<td>481.763000</td>
-<td>26.579519</td>
-<td>110.337173</td>
-<td>48.570000</td>
-<td>61.419998</td>
-<td>69.809998</td>
-<td>576.722595</td>
-<td>96.973328</td>
-<td>280.594360</td>
-<td>181.222961</td>
-<td>36.200001</td>
-</tr>
-</tbody>
-</table>
-
-<p>954 rows × 20 columns</p>
-</div>
-</div>
-</div>
-</section>
-<section id="calculating-stock-returns-and-correlation" class="level2">
-<h2 class="anchored" data-anchor-id="calculating-stock-returns-and-correlation">Calculating stock returns and correlation</h2>
-<div id="8382814d" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating Returns</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>returns <span class="op">=</span> data.pct_change().dropna()</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>correlation_matrix <span class="op">=</span> returns.corr()</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the heatmap</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">20</span>))</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>sns.heatmap(correlation_matrix, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, fmt<span class="op">=</span><span class="st">".2f"</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Correlation Matrix of Selected Stocks'</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/49/wztx6mrd3qd9qcgjnk_y96040000gn/T/ipykernel_21427/4222160605.py:2: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  returns = data.pct_change().dropna()</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="project_1_files/figure-html/cell-4-output-2.png" width="1411" height="1540" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-
-
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
