@@ -2,7 +2,7 @@
 title: "Jason Lee"
 about:
   template: jolla
-  image: "img/UBC_20241011_PJ_2457.jpg"
+  image: "img/UBC_20241011_PJ_2457 -compressed.jpg"
   links:
     - icon: linkedin
       text: linkedin
@@ -12,4 +12,4 @@ about:
       href: https://github.com/jasonmlee
 ---
 
-I'm a Data Analyst with 5 years of experience working in the banking industry. I hold a degree in accounting in finance from the University of Exeter and I'm a Chartered Financial Analyst (CFA).
+I'm a Data Analyst with 5 years of experience working in the banking industry. I'm a Chartered Financial Analyst (CFA) and a current master of data science student at UBC.

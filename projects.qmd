@@ -1,8 +1,9 @@
 ---
 title: "Projects"
-listing: 
-    contents: posts
-    type: table
-    categories: true
-    fields: [title, reading-time]
 ---
+
+| Title               | Description                                | Link                                                             |
+|---------------------|--------------------------------------------|------------------------------------------------------------------|
+| Black Scholes Model | Interactive app to calculate option prices | [Visit the App](https://black-scholes-price-model.streamlit.app) |
+| Project 1           | Description of project 1                   | [Read More](posts/project_1.qmd)                                 |
+| Project 2           | Description of project 2                   | [Read More](posts/project_2.qmd)                                 |
