@@ -1,6 +1,6 @@
 ---
-title: "Investment Portfolio Optimization in Python"
-description: "A tutorial on how to do Mean Variance Optimization in  Python"
+title: "A Practical Guide to Portfolio Optimization in Python"
+description: "A tutorial on how to perform mean variance optimization in python"
 author: Jason Lee
 reading_time: "10-15 min"
 jupyter: finance
