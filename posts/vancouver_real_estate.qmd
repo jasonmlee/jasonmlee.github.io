@@ -1,0 +1,11 @@
+---
+title: "Vancouver Real Estate Screener"
+description: "An interactive app that visualises properties for sale in Vancouver"
+author: Jason Lee
+reading_time: "1 min"
+external_link: https://vancouver-real-estate-scanner.streamlit.app
+image: "../img/house.jpg"
+weight: 3
+---
+
+[Link to project](https://vancouver-real-estate-scanner.streamlit.app)

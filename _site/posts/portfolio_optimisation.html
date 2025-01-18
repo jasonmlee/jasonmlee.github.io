@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Jason Lee">
-<meta name="description" content="An interactive app to calculates option prices using Black-Scholes">
 
-<title>Black Scholes Option Pricing Model – Jason Lee</title>
+<title>Portfolio Optimization using Python – Jason Lee</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,10 +20,44 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -68,6 +100,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -96,7 +131,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../projects.html"> 
-<span class="menu-text">Blog</span></a>
+<span class="menu-text">Projects</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -109,32 +144,34 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow">Workflow</a></li>
+  <li><a href="#problem-definition" id="toc-problem-definition" class="nav-link" data-scroll-target="#problem-definition">Problem Definition</a></li>
+  <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports">Imports</a></li>
+  <li><a href="#data-collection" id="toc-data-collection" class="nav-link" data-scroll-target="#data-collection">Data Collection</a></li>
+  <li><a href="#portfolio-construction" id="toc-portfolio-construction" class="nav-link" data-scroll-target="#portfolio-construction">Portfolio Construction</a></li>
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">Visualization</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Black Scholes Option Pricing Model</h1>
+<h1 class="title">Portfolio Optimization using Python</h1>
 </div>
 
-<div>
-  <div class="description">
-    An interactive app to calculates option prices using Black-Scholes
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Jason Lee </p>
-          </div>
-  </div>
     
   
     
@@ -145,9 +182,233 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://black-scholes-price-model.streamlit.app">Link to project</a></p>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>To achieve financial independence, everyone should learn how to invest and manage their own portfolio. If you come from a data science / finance background, wouldn’t it be great to employ financial / data science techniques to obtain a greater degree of control over your investments. Using a systematic approach to determine portfolio allocation is ideal in scenarios where you want to be disciplined and remove emotions from investing. With easy to access python libraries like Pandas, yfinance, and Riskfolio-Lib, as retail investors, we too can use techniques that wealth managers and financial institutions use. This tutorial will go over how to perform mean-variance optimization (MVO) to obtain an optimal and efficient portfolio.</p>
+</section>
+<section id="background" class="level3">
+<h3 class="anchored" data-anchor-id="background">Background</h3>
+<p>I’m Jason Lee, a Chartered Financial Analyst (CFA) who has worked in the financial industry for 5+ years. I’m currently a UBC master of data science graduate student. I don’t claim to be a financial advisor. All investing incurs an element of risk and should be heeded with caution. I just want to provide a framework that investors can use to test investing ideas and aid them on their journey to financial independence.</p>
+</section>
+<section id="workflow" class="level3">
+<h3 class="anchored" data-anchor-id="workflow">Workflow</h3>
+<ol type="1">
+<li>Problem Definition: Setting investment goals and constraints</li>
+<li>Data Collection: Importing data from yfinance (Yahoo finance)</li>
+<li>Portfolio Construction: Using Riskfolio-Lib to create efficient portfolios</li>
+<li>Visualization: Displaying results through efficient frontiers and allocation breakdowns</li>
+</ol>
+</section>
+<section id="problem-definition" class="level3">
+<h3 class="anchored" data-anchor-id="problem-definition">Problem Definition</h3>
+<p>In order to set investment goals, we need to understand the following: 1. Ability to take risk 2. Willingness to take risk 3. Time horizon 4. Liquidity needs</p>
+<p><strong>Investor profile:</strong> The investor is a working professional in their mid-twenties. Since they plan to retire at 65, they have a long time horizon of 40 years. With a long time horizon, they have a high risk tolerance as they can recover from possible portfolio drawdowns. They currently have $30,000 in liquid assets that they can invest in. They don’t have any large upcoming liquidity needs. Their main liquidity needs come from rent, monthly expenses and car insurance. With this risk profile, they wish to earn 10% annual return.</p>
+</section>
+<section id="imports" class="level3">
+<h3 class="anchored" data-anchor-id="imports">Imports</h3>
+<div id="03989ee2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> riskfolio <span class="im">as</span> rp</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yfinance <span class="im">as</span> yf</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-collection" class="level3">
+<h3 class="anchored" data-anchor-id="data-collection">Data Collection</h3>
+<ul>
+<li>For data collection, I will use yfinance</li>
+<li>Using a few lines of python, it allows users to download market data from Yahoo! Finance’s API yfinance</li>
+</ul>
+<div id="fa2bda06" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define tickers for ETFs</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tickers <span class="op">=</span> [<span class="st">'SPY'</span>, <span class="st">'TLT'</span>, <span class="st">'GLD'</span>, <span class="st">'DBC'</span>]  <span class="co"># Equities, Bonds, Gold, Commodities</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Download historical price data</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> yf.download(tickers, start<span class="op">=</span><span class="st">"2010-01-01"</span>, end<span class="op">=</span><span class="st">"2024-12-25"</span>)[<span class="st">'Close'</span>]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate daily returns</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>returns <span class="op">=</span> data.pct_change().dropna()</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>returns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[                       0%                       ][**********************50%                       ]  2 of 4 completed[**********************75%***********            ]  3 of 4 completed[*********************100%***********************]  4 of 4 completed</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
 
 
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Ticker</th>
+<th data-quarto-table-cell-role="th">DBC</th>
+<th data-quarto-table-cell-role="th">GLD</th>
+<th data-quarto-table-cell-role="th">SPY</th>
+<th data-quarto-table-cell-role="th">TLT</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Date</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2010-01-05</td>
+<td>0.001189</td>
+<td>-0.000911</td>
+<td>0.002647</td>
+<td>0.006458</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2010-01-06</td>
+<td>0.017808</td>
+<td>0.016500</td>
+<td>0.000704</td>
+<td>-0.013387</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2010-01-07</td>
+<td>-0.012442</td>
+<td>-0.006188</td>
+<td>0.004221</td>
+<td>0.001682</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2010-01-08</td>
+<td>-0.000787</td>
+<td>0.004963</td>
+<td>0.003328</td>
+<td>-0.000447</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2010-01-11</td>
+<td>-0.003152</td>
+<td>0.013289</td>
+<td>0.001396</td>
+<td>-0.005487</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-12-18</td>
+<td>-0.009058</td>
+<td>-0.019185</td>
+<td>-0.029803</td>
+<td>-0.012504</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2024-12-19</td>
+<td>0.000000</td>
+<td>0.001421</td>
+<td>-0.000307</td>
+<td>-0.015141</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-12-20</td>
+<td>0.006399</td>
+<td>0.010434</td>
+<td>0.012011</td>
+<td>0.005694</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2024-12-23</td>
+<td>0.000765</td>
+<td>-0.004709</td>
+<td>0.005988</td>
+<td>-0.009172</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-12-24</td>
+<td>0.005736</td>
+<td>0.001992</td>
+<td>0.011115</td>
+<td>0.004229</td>
+</tr>
+</tbody>
+</table>
+
+<p>3769 rows × 4 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="portfolio-construction" class="level3">
+<h3 class="anchored" data-anchor-id="portfolio-construction">Portfolio Construction</h3>
+<div id="08300b63" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Portfolio Object</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>port <span class="op">=</span> rp.Portfolio(returns<span class="op">=</span>returns)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the estimation methods for expected returns and covariance</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>method_mu <span class="op">=</span> <span class="st">"hist"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>method_cov <span class="op">=</span> <span class="st">"hist"</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the portfolio object to use these methods</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>port.assets_stats(method_mu<span class="op">=</span>method_mu, method_cov<span class="op">=</span>method_cov)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate optimal portfolio:</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>model<span class="op">=</span><span class="st">'Classic'</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>rm <span class="op">=</span> <span class="st">'MV'</span> <span class="co"># Risk measure used, this time will be variance</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> <span class="st">'Sharpe'</span> <span class="co"># Objective function</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>hist <span class="op">=</span> <span class="va">True</span> <span class="co"># Use historical scenarios for risk measures that depend on scenarios</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>rf <span class="op">=</span> <span class="dv">0</span> <span class="co"># Risk free rate</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> <span class="dv">0</span> <span class="co"># Risk aversion factor, only useful when obj is 'Utility'</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># mean-variance optimization framework</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> port.optimization(model<span class="op">=</span>model, rm<span class="op">=</span>rm, obj<span class="op">=</span>obj, rf<span class="op">=</span>rf, l<span class="op">=</span>l, hist<span class="op">=</span>hist)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Display Weights</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          weights
+DBC  6.796966e-10
+GLD  1.456304e-01
+SPY  5.428307e-01
+TLT  3.115389e-01</code></pre>
+</div>
+</div>
+</section>
+<section id="visualization" class="level3">
+<h3 class="anchored" data-anchor-id="visualization">Visualization</h3>
+<div id="f40b5a71" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the portfolio weights determined by equal risk contribution</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> rp.plot_pie(w<span class="op">=</span>w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="portfolio_optimisation_files/figure-html/cell-5-output-1.png" width="779" height="587" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="24399289" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the risk contributions of each ETF which as we can see is</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># equal.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> rp.plot_risk_con(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    w,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    cov<span class="op">=</span>port.cov,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    returns<span class="op">=</span>port.returns,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    rm<span class="op">=</span><span class="st">"MV"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    rf<span class="op">=</span><span class="fl">0.05</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="portfolio_optimisation_files/figure-html/cell-6-output-1.png" width="971" height="587" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

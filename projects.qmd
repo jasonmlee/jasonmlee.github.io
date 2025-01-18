@@ -1,9 +1,12 @@
 ---
-title: "Projects"
+title: "Blog"
+listing:
+  contents: posts
+  sort: "weight asc"
+  type: default
+  categories: true
+  sort-ui: true
+  filter-ui: false
+page-layout: full
+title-block-banner: true
 ---
-
-| Title               | Description                                | Link                                                             |
-|---------------------|--------------------------------------------|------------------------------------------------------------------|
-| Black Scholes Model | Interactive app to calculate option prices | [Visit the App](https://black-scholes-price-model.streamlit.app) |
-| Project 1           | Description of project 1                   | [Read More](posts/project_1.qmd)                                 |
-| Project 2           | Description of project 2                   | [Read More](posts/project_2.qmd)                                 |

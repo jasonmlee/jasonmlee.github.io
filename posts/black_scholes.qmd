@@ -1,6 +1,11 @@
 ---
 title: "Black Scholes Option Pricing Model"
-description: "An interactive app to calculate Black-Scholes prices"
-reading_time: "1 min"
+description: "An interactive app to calculates option prices using Black-Scholes"
+author: Jason Lee
+reading_time: "5 min"
 external_link: https://black-scholes-price-model.streamlit.app
+image: "../img/stocks.jpg"
+weight: 2
 ---
+
+[Link to project](https://black-scholes-price-model.streamlit.app)

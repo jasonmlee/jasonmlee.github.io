@@ -1,0 +1,254 @@
+---
+title: "Investment Portfolio Optimization in Python"
+description: "A tutorial on how to do Mean Variance Optimization in  Python"
+author: Jason Lee
+reading_time: "10-15 min"
+jupyter: finance
+image: "../img/piggybank.jpg"
+weight: 1
+---
+
+### Eggs in a Basket: Why Diversify?
+As the saying goes, "Don't put all your eggs in one basket". Diversification is a cornerstone of investing, designed to protect portfolios from market volatility and unforeseen events. 
+However, diversification raises an important question: **how should money be allocated across individual investments?** </br></br>
+For those with a background in data science or finance, leveraging analytical techniques can provide an edge in taking control of your investments. 
+A systematic approach to portfolio allocation is key to staying disciplined and removing emotions from the decision-making process. 
+Thanks to accessible Python libraries like **Pandas, yfinance and Riskfolio-Lib**, retail investors now have the tools to apply techniques used by wealth managers and financial institutions. 
+In this tutorial, we’ll explore how to perform mean-variance optimization (MVO) in python to construct an efficient and optimal portfolio. </br></br>
+
+![Broken eggs. Broken dreams](../img/egg.jpg)
+
+### What is Mean-Variance Optimization (MVO)?
+Before jumping into the code we should first get a high level understanding of MVO. 
+Mean-Variance Optimization (MVO), introduced by Harry Markowitz in 1952, plays a critical role in portfolio management by providing a systematic framework for balancing risk and return. 
+MVO helps investors construct a portfolio that **maximizes expected return for a given level of risk**.
+Simply put, MVO is a great tool that helps investors efficiently achieve diversification such that they don’t put all their eggs in one basket. 
+MVO is widely used by professionals and institutions to systematically manage investment portfolios. 
+
+### Background
+I’m Jason Lee, a Chartered Financial Analyst (CFA) with over five years of experience in the financial industry. 
+Currently, I’m pursuing a Master of Data Science at the University of British Columbia. 
+While I’m not a financial advisor and this tutorial isn’t financial advice, I aim to share a practical framework that people can use to test their ideas and improve their investing. 
+Keep in mind that all investing involves risk, so approach these concepts with caution.
+
+### Workflow
+1. Problem Definition: Allocating Investments Efficiently
+2. Imports
+3. Data Collection: Retreiving data from yfinance (Yahoo finance)
+4. Portfolio Construction: Using Riskfolio-Lib to create efficient portfolios
+5. Visualization: Displaying results through efficient frontiers and allocation breakdowns
+
+### 0. Problem Definition: Allocating Investments Efficiently
+Investing involves more than just selecting stocks—it’s about determining the right mix of investments to achieve your financial goals while managing risk.
+This balance is hard to acheive because:
+
+1. **Trade-Off Between Risk and Return:** Investors want to maximize returns, but doing so often increases exposure to risk.
+2. **Complex Interactions:** The performance of assets is rarely independent. Correlations between assets can amplify or reduce portfolio risk.
+3. **Allocation Decisions:** Determining how much money to allocate to each asset in a way that achieves an efficient trade-off between risk and return is not always intuitive.
+
+To illustrate the concept of diversification and optimal allocation, we’ll use a sample portfolio. This portfolio includes a diverse mix of stocks, gold, real estate, and bonds to represent different asset classes. By applying Mean-Variance Optimization (MVO), we’ll determine how to allocate investments efficiently.
+
+```{python}
+#| echo: false
+import pandas as pd
+
+investment_universe = pd.read_excel("../data/portfolio_opt.xlsb", sheet_name=0)
+investment_universe
+
+```
+
+### 1. Imports
+```{python}
+import pandas as pd
+import riskfolio as rp
+import yfinance as yf
+import matplotlib.pyplot as plt
+```
+
+### 2. Data Collection / Wrangling
+To apply Mean-Variance Optimization (MVO) effectively, we first need to gather historical price data for the assets in our sample portfolio. We can do this using the [yfinance](https://pypi.org/project/yfinance/) library. While its data coverage may not match that of premium providers, yfinance is an excellent free resource for beginners learning quantitative finance concepts.
+
+**Steps:**
+
+1. **Define the investment universe:** Specify the list of assets in the portfolio and assign them to the `tickers` variable.
+2. **Extract Historical Prices:** Use `yf.download()` to extract daily historical asset prices and store them in the `data` variable as a Pandas DataFrame. We'll subset the dataset to retreive only the `Close` price.
+3. **Calculate Daily Returns:** Using the `pct_change()` function, we’ll compute the daily percentage returns for each asset, which are required for MVO. These returns will be stored in the `returns` DataFrame.
+
+**Note:**
+
+- For this tutorial, we are using a 1 year time period (Jan 2024 - Jan 2025) to ensure that the portfolio reflects recent market trends and conditions.
+- Daily returns provide a granular view of asset behavior, which is well suited for portfolio optimisation.
+
+
+```{python}
+# Define tickers
+tickers = ['AAPL', 'MSFT', 'JNJ', 'XOM', 'PG', 'JPM', 'TSLA', 'KO', 'GLD', 'VNQ', 'AGG'] 
+
+# Download historical price data
+data = yf.download(tickers, start="2024-01-01", end="2025-01-01")['Close']
+
+# Calculate daily returns
+returns = data.pct_change().dropna()
+returns.head()
+
+```
+
+### 3. Portfolio Construction using MVO
+With the returns DataFrame ready, we can now construct an optimal portfolio using **[Riskfolio-Lib](https://riskfolio-lib.readthedocs.io/en/latest/)**. Mean-Variance Optimization (MVO) is a mathematical framework that solves for the portfolio allocation offering the **highest expected return for a given level of risk**.
+
+**Steps:**
+
+1. **Create a Portfolio Object:** Start by creating a portfolio object from **Riskfolio-Lib**. This object takes the `returns` DataFrame as an input.
+2. **Config Estimation Methods:** Since the returns dataframe is sourced from historical price data, we configure both mean and covariance estimation methods to use historical statistics.
+3. **Set model parameters:**
+    - model= `Classic` : Refers to classical Mean-Variance Optimization (MVO)
+    - rm= `MV`: Risk measure set to variance (Minimizing Variance) 
+    - obj= `Sharpe`: Optimization objective set to maximize the Sharpe Ratio (risk-adjusted return)
+    - hist = True: Use historical scenarios for risk measures that depend on scenarios
+    - annual_rf= 0.0312: The Annual risk-free rate in Canada (2024 - 2025)
+    - daily_rf : Annual risk-free rate converted to daily risk-free rate
+4. **Set Constraints:**
+    - Constraints ensure the portfolio remains diversified and avoids overconcentration in specific assets. 
+    - **Maximum Position Size:** In this portfolio, I set a constraint where no single asset can exceed 30% of the portfolio allocation.
+    - **Minimum Position Size:** In this portfolio, I set a constraint where no single asset can be below 1% of the portfolio allocation. This is to ensure that all assets get some allocation.
+5. **Get optimal portfolio weights:**
+    - The port.optimization method in Riskfolio-Lib uses a mathematical optimization library called `CVXPY` to return the optimal portfolio weights.
+    - This is a convex optimization problem, meaning it is computationally efficient and guarantees a global optimum.
+
+```{python}
+pd.options.display.float_format = '{:.2f}'.format
+
+# Create Portfolio Object
+port = rp.Portfolio(returns=returns)
+
+# Set the estimation methods for expected returns and covariance
+method_mu = "hist"
+method_cov = "hist"
+
+# Update the portfolio object to use these methods
+port.assets_stats(method_mu=method_mu, method_cov=method_cov)
+
+# Estimate optimal portfolio:
+model='Classic'
+rm = 'MV' # Risk measure used - variance
+obj = 'Sharpe' # Objective function
+hist = True # Use historical scenarios for risk measures that depend on scenarios
+annual_rf = 0.0312 # Annual risk-free rate
+daily_rf = (1 + annual_rf) ** (1/252) - 1 # Convert to daily risk-free rate
+
+# Set Constraints 
+asset_classes = pd.read_excel("../data/portfolio_opt.xlsb", sheet_name=1)
+constraints = pd.read_excel("../data/portfolio_opt.xlsb", sheet_name=2)
+
+A, B = rp.assets_constraints(constraints, asset_classes)
+
+port.ainequality = A
+port.binequality = B
+
+# mean-variance optimization framework
+w = port.optimization(model=model, 
+                      rm=rm, 
+                      obj=obj, 
+                      rf=daily_rf, 
+                      hist=hist) 
+
+# Display Weights
+print(w)
+
+```
+
+### 4. Visualization: Displaying results through allocation breakdowns and efficient frontiers
+Visualization is a key step in understanding and communicating the outcome of portfolio optimization. 
+In this section, I'll introduce some of the built in visualisations that Riskfolio-Lib has to help us understand our optimal portfolio.
+These visuals help illustrate the practical implications of MVO.
+
+#### Visualising Portfolio Weights
+
+- We can visualise the portfolio weights (`w`) using a donut chart
+- Riskfolio-Lib has a built in method called rp.plot_pie() that does this for us.
+
+**Key Observations:**
+
+The portfolio has made sizable allocations to the following assets: 
+
+- GLD (30%): Gold plays a significant role in the portfolio due to its diversification benefits. Its returns has lower correlations to those of stocks. This helps reduce overall portfolio risk and makes it an attractive choice for stability.
+- Proctor & Gamble (22.2%): A stable, defensive consumer goods stock.
+- JP Morgan (22.8%): Exposure to the financial sector.
+- Apple (16.9%): Exposure to the technology sector.
+
+```{python}
+# Plot the portfolio weights determined by MVO
+ax = rp.plot_pie(w=w, title='Portfolio allocation (using Sharpe MVO)')
+
+```
+
+#### Visualising Risk Contribution
+
+- We can also assess the portfolio's risk contribution per asset
+- Riskfolio-Lib has a built in method called rp.plot_risk_con() that creates a bar chart.
+- Risk contribution provides insight into whether the portfolio's risk is diversified or concentrated in specific assets.
+
+```{python}
+# Plot the risk contributions of each stock
+ax = rp.plot_risk_con(
+    w,
+    cov=port.cov, #Portfolio's covariance matrix
+    returns=port.returns, #Portfolio returns
+    rm="MV", # Risk measure used - variance
+    rf=daily_rf
+)
+
+```
+
+#### Visualising The Efficient Frontier
+- The **Efficient Frontier** is arguably the most instructive visualization in Mean-Variance Optimization.
+- It represents the set of portfolios that offer the highest expected return for a given level of risk.
+- Each point along the efficient frontier corresponds to a portfolio optimized for a specific target return or level of risk, demonstrating the trade-off between risk and return.
+- In the EF below, the optimal portfolio ('w'), which maximises the **sharpe ratio**, is marked with a red star.
+
+**Steps:**
+
+1. **Create the points of the frontier:** Use the port.efficient_frontier() method. This method calculates a range of portfolios by varying the risk or return targets, ensuring the results span the entire efficient frontier.
+2. **Visualise the efficient frontier:** Use the rp.plot_frontier() method to plot the efficient frontier and highlight the optimal portfolio. 
+
+
+```{python}
+
+#Create the points of the frontier
+points = 50 # Number of points of the frontier
+frontier = port.efficient_frontier(model=model, rm=rm, points=points, rf=daily_rf, hist=hist)
+
+# Plotting the efficient frontier
+label = 'Max Risk Adjusted Return Portfolio' # Title of optimal portfolio
+mu = port.mu # Expected return of portfolio
+cov = port.cov # Covariance matrix
+returns = port.returns # Returns of the assets
+
+ax = rp.plot_frontier(w_frontier=frontier, mu=mu, cov=cov, returns=port.returns, rm=rm,
+                      rf=daily_rf, alpha=0.05, cmap='viridis', w=w, label=label,
+                      marker='*', s=16, c='r', height=6, width=10, ax=None)
+
+```
+
+### 5. Takeaways
+In this tutorial, we explored how to construct an optimal portfolio using Mean-Variance Optimization (MVO) with Riskfolio-Lib. 
+By following a systematic approach, we successfully applied MVO for portfolio management. Here are some key takeaways:
+
+1. **Diversification is Key:**
+The principle of "not putting all your eggs in one basket" is at the core of portfolio optimization. MVO helps ensure that portfolios are well-diversified across assets, reducing the impact of individual asset volatility.
+
+2. **Systematic Allocation:**
+MVO uses mathematical optimization to take emotions out of investment decisions, allocating capital in a way that balances risk and return efficiently.
+
+3. **Efficient Frontier Insights:**
+The efficient frontier visualizes the trade-off between risk and return, offering a roadmap for constructing portfolios that align with an investor’s risk tolerance and return expectations.
+
+4. **Constraints Matter:**
+Constraints like maximum position sizes (e.g., no more than 30% in one asset) and minimum allocations (e.g., at least 1% per asset) play an important role in making portfolios realistic and implementable.
+
+5. **How Often Should You Run MVO?:**
+It depends. But I offer three reasonable suggestions.
+
+- **Annually:** For most retail investors, running MVO once a year strikes a good balance between maintaining an optimal allocation and minimizing transaction costs.
+- **Semi-Annually or Quarterly:** In volatile markets or for portfolios with high turnover, rebalancing more frequently can help align the portfolio with changing market dynamics.
+- **Threshold-Based Rebalancing:** Alternatively, rebalance only when allocations deviate significantly (e.g. by more than 5% from the target weights).

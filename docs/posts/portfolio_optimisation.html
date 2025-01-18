@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jason Lee">
+<meta name="description" content="A tutorial on how to do Mean Variance Optimization in Python">
+
+<title>Investment Portfolio Optimization in Python – Jason Lee</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8d240b0b27f88eb311e80d41b403b1f7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Jason Lee</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../projects.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#eggs-in-a-basket-why-diversify" id="toc-eggs-in-a-basket-why-diversify" class="nav-link active" data-scroll-target="#eggs-in-a-basket-why-diversify">Eggs in a Basket: Why Diversify?</a></li>
+  <li><a href="#what-is-mean-variance-optimization-mvo" id="toc-what-is-mean-variance-optimization-mvo" class="nav-link" data-scroll-target="#what-is-mean-variance-optimization-mvo">What is Mean-Variance Optimization (MVO)?</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow">Workflow</a></li>
+  <li><a href="#problem-definition-allocating-investments-efficiently" id="toc-problem-definition-allocating-investments-efficiently" class="nav-link" data-scroll-target="#problem-definition-allocating-investments-efficiently">0. Problem Definition: Allocating Investments Efficiently</a></li>
+  <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports">1. Imports</a></li>
+  <li><a href="#data-collection-wrangling" id="toc-data-collection-wrangling" class="nav-link" data-scroll-target="#data-collection-wrangling">2. Data Collection / Wrangling</a></li>
+  <li><a href="#portfolio-construction-using-mvo" id="toc-portfolio-construction-using-mvo" class="nav-link" data-scroll-target="#portfolio-construction-using-mvo">3. Portfolio Construction using MVO</a></li>
+  <li><a href="#visualization-displaying-results-through-allocation-breakdowns-and-efficient-frontiers" id="toc-visualization-displaying-results-through-allocation-breakdowns-and-efficient-frontiers" class="nav-link" data-scroll-target="#visualization-displaying-results-through-allocation-breakdowns-and-efficient-frontiers">4. Visualization: Displaying results through allocation breakdowns and efficient frontiers</a></li>
+  <li><a href="#takeaways" id="toc-takeaways" class="nav-link" data-scroll-target="#takeaways">5. Takeaways</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Investment Portfolio Optimization in Python</h1>
+</div>
+
+<div>
+  <div class="description">
+    A tutorial on how to do Mean Variance Optimization in Python
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jason Lee </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="eggs-in-a-basket-why-diversify" class="level3">
+<h3 class="anchored" data-anchor-id="eggs-in-a-basket-why-diversify">Eggs in a Basket: Why Diversify?</h3>
+<p>As the saying goes, “Don’t put all your eggs in one basket”. Diversification is a cornerstone of investing, designed to protect portfolios from market volatility and unforeseen events. However, diversification raises an important question: <strong>how should money be allocated across individual investments?</strong> <br><br> For those with a background in data science or finance, leveraging analytical techniques can provide an edge in taking control of your investments. A systematic approach to portfolio allocation is key to staying disciplined and removing emotions from the decision-making process. Thanks to accessible Python libraries like <strong>Pandas, yfinance and Riskfolio-Lib</strong>, retail investors now have the tools to apply techniques used by wealth managers and financial institutions. In this tutorial, we’ll explore how to perform mean-variance optimization (MVO) in python to construct an efficient and optimal portfolio. <br><br></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/egg.jpg" class="img-fluid figure-img"></p>
+<figcaption>Broken eggs. Broken dreams</figcaption>
+</figure>
+</div>
+</section>
+<section id="what-is-mean-variance-optimization-mvo" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-mean-variance-optimization-mvo">What is Mean-Variance Optimization (MVO)?</h3>
+<p>Before jumping into the code we should first get a high level understanding of MVO. Mean-Variance Optimization (MVO), introduced by Harry Markowitz in 1952, plays a critical role in portfolio management by providing a systematic framework for balancing risk and return. MVO helps investors construct a portfolio that <strong>maximizes expected return for a given level of risk</strong>. Simply put, MVO is a great tool that helps investors efficiently achieve diversification such that they don’t put all their eggs in one basket. MVO is widely used by professionals and institutions to systematically manage investment portfolios.</p>
+</section>
+<section id="background" class="level3">
+<h3 class="anchored" data-anchor-id="background">Background</h3>
+<p>I’m Jason Lee, a Chartered Financial Analyst (CFA) with over five years of experience in the financial industry. Currently, I’m pursuing a Master of Data Science at the University of British Columbia. While I’m not a financial advisor and this tutorial isn’t financial advice, I aim to share a practical framework that people can use to test their ideas and improve their investing. Keep in mind that all investing involves risk, so approach these concepts with caution.</p>
+</section>
+<section id="workflow" class="level3">
+<h3 class="anchored" data-anchor-id="workflow">Workflow</h3>
+<ol type="1">
+<li>Problem Definition: Allocating Investments Efficiently</li>
+<li>Imports</li>
+<li>Data Collection: Retreiving data from yfinance (Yahoo finance)</li>
+<li>Portfolio Construction: Using Riskfolio-Lib to create efficient portfolios</li>
+<li>Visualization: Displaying results through efficient frontiers and allocation breakdowns</li>
+</ol>
+</section>
+<section id="problem-definition-allocating-investments-efficiently" class="level3">
+<h3 class="anchored" data-anchor-id="problem-definition-allocating-investments-efficiently">0. Problem Definition: Allocating Investments Efficiently</h3>
+<p>Investing involves more than just selecting stocks—it’s about determining the right mix of investments to achieve your financial goals while managing risk. This balance is hard to acheive because:</p>
+<ol type="1">
+<li><strong>Trade-Off Between Risk and Return:</strong> Investors want to maximize returns, but doing so often increases exposure to risk.</li>
+<li><strong>Complex Interactions:</strong> The performance of assets is rarely independent. Correlations between assets can amplify or reduce portfolio risk.</li>
+<li><strong>Allocation Decisions:</strong> Determining how much money to allocate to each asset in a way that achieves an efficient trade-off between risk and return is not always intuitive.</li>
+</ol>
+<p>To illustrate the concept of diversification and optimal allocation, we’ll use a sample portfolio. This portfolio includes a diverse mix of stocks, gold, real estate, and bonds to represent different asset classes. By applying Mean-Variance Optimization (MVO), we’ll determine how to allocate investments efficiently.</p>
+<div id="b58d8022" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Ticker</th>
+<th data-quarto-table-cell-role="th">Name</th>
+<th data-quarto-table-cell-role="th">Sector</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>AAPL</td>
+<td>Apple Inc.</td>
+<td>Technology</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>MSFT</td>
+<td>Microsoft Corp.</td>
+<td>Technology</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>JNJ</td>
+<td>Johnson &amp; Johnson</td>
+<td>Healthcare</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>XOM</td>
+<td>\tExxon Mobil Corp.</td>
+<td>Energy</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>PG</td>
+<td>Procter &amp; Gamble</td>
+<td>Consumer Goods</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>JPM</td>
+<td>JPMorgan Chase</td>
+<td>Financials</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>TSLA</td>
+<td>Tesla Inc.</td>
+<td>Automotive/Tech</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>KO</td>
+<td>Coca-Cola Co.</td>
+<td>Consumer Staples</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>GLD</td>
+<td>\tSPDR Gold Shares ETF</td>
+<td>Gold</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>VNQ</td>
+<td>Vanguard Real Estate ETF</td>
+<td>Real Estate (REITs)</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>AGG</td>
+<td>\tiShares Core U.S. Aggregate Bond ETF</td>
+<td>Bonds</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="imports" class="level3">
+<h3 class="anchored" data-anchor-id="imports">1. Imports</h3>
+<div id="3ba289ce" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> riskfolio <span class="im">as</span> rp</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yfinance <span class="im">as</span> yf</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-collection-wrangling" class="level3">
+<h3 class="anchored" data-anchor-id="data-collection-wrangling">2. Data Collection / Wrangling</h3>
+<p>To apply Mean-Variance Optimization (MVO) effectively, we first need to gather historical price data for the assets in our sample portfolio. We can do this using the <a href="https://pypi.org/project/yfinance/">yfinance</a> library. While its data coverage may not match that of premium providers, yfinance is an excellent free resource for beginners learning quantitative finance concepts.</p>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li><strong>Define the investment universe:</strong> Specify the list of assets in the portfolio and assign them to the <code>tickers</code> variable.</li>
+<li><strong>Extract Historical Prices:</strong> Use <code>yf.download()</code> to extract daily historical asset prices and store them in the <code>data</code> variable as a Pandas DataFrame. We’ll subset the dataset to retreive only the <code>Close</code> price.</li>
+<li><strong>Calculate Daily Returns:</strong> Using the <code>pct_change()</code> function, we’ll compute the daily percentage returns for each asset, which are required for MVO. These returns will be stored in the <code>returns</code> DataFrame.</li>
+</ol>
+<p><strong>Note:</strong></p>
+<ul>
+<li>For this tutorial, we are using a 1 year time period (Jan 2024 - Jan 2025) to ensure that the portfolio reflects recent market trends and conditions.</li>
+<li>Daily returns provide a granular view of asset behavior, which is well suited for portfolio optimisation.</li>
+</ul>
+<div id="3283f56e" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define tickers</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tickers <span class="op">=</span> [<span class="st">'AAPL'</span>, <span class="st">'MSFT'</span>, <span class="st">'JNJ'</span>, <span class="st">'XOM'</span>, <span class="st">'PG'</span>, <span class="st">'JPM'</span>, <span class="st">'TSLA'</span>, <span class="st">'KO'</span>, <span class="st">'GLD'</span>, <span class="st">'VNQ'</span>, <span class="st">'AGG'</span>] </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Download historical price data</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> yf.download(tickers, start<span class="op">=</span><span class="st">"2024-01-01"</span>, end<span class="op">=</span><span class="st">"2025-01-01"</span>)[<span class="st">'Close'</span>]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate daily returns</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>returns <span class="op">=</span> data.pct_change().dropna()</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>returns.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[                       0%                       ][*********             18%                       ]  2 of 11 completed[*********             18%                       ]  2 of 11 completed[*****************     36%                       ]  4 of 11 completed[**********************45%                       ]  5 of 11 completed[**********************55%*                      ]  6 of 11 completed[**********************64%******                 ]  7 of 11 completed[**********************73%**********             ]  8 of 11 completed[**********************82%**************         ]  9 of 11 completed[**********************91%*******************    ]  10 of 11 completed[*********************100%***********************]  11 of 11 completed</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Ticker</th>
+<th data-quarto-table-cell-role="th">AAPL</th>
+<th data-quarto-table-cell-role="th">AGG</th>
+<th data-quarto-table-cell-role="th">GLD</th>
+<th data-quarto-table-cell-role="th">JNJ</th>
+<th data-quarto-table-cell-role="th">JPM</th>
+<th data-quarto-table-cell-role="th">KO</th>
+<th data-quarto-table-cell-role="th">MSFT</th>
+<th data-quarto-table-cell-role="th">PG</th>
+<th data-quarto-table-cell-role="th">TSLA</th>
+<th data-quarto-table-cell-role="th">VNQ</th>
+<th data-quarto-table-cell-role="th">XOM</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Date</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-01-03</td>
+<td>-0.007488</td>
+<td>0.000506</td>
+<td>-0.008337</td>
+<td>0.006251</td>
+<td>-0.004358</td>
+<td>0.002340</td>
+<td>-0.000728</td>
+<td>-0.006051</td>
+<td>-0.040134</td>
+<td>-0.023901</td>
+<td>0.008402</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2024-01-04</td>
+<td>-0.012700</td>
+<td>-0.004047</td>
+<td>0.001005</td>
+<td>-0.002112</td>
+<td>0.006636</td>
+<td>-0.003335</td>
+<td>-0.007177</td>
+<td>0.005479</td>
+<td>-0.002181</td>
+<td>-0.001839</td>
+<td>-0.008719</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-01-05</td>
+<td>-0.004013</td>
+<td>-0.002337</td>
+<td>0.000158</td>
+<td>0.003113</td>
+<td>0.005017</td>
+<td>-0.001506</td>
+<td>-0.000516</td>
+<td>-0.008275</td>
+<td>-0.001849</td>
+<td>-0.002534</td>
+<td>0.003030</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2024-01-08</td>
+<td>0.024175</td>
+<td>0.003768</td>
+<td>-0.007816</td>
+<td>0.002482</td>
+<td>-0.001451</td>
+<td>0.007374</td>
+<td>0.018872</td>
+<td>0.008615</td>
+<td>0.012464</td>
+<td>0.014317</td>
+<td>-0.016662</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-01-09</td>
+<td>-0.002263</td>
+<td>-0.000203</td>
+<td>0.000319</td>
+<td>0.000619</td>
+<td>-0.007906</td>
+<td>-0.001830</td>
+<td>0.002936</td>
+<td>0.004103</td>
+<td>-0.022832</td>
+<td>-0.006716</td>
+<td>-0.012386</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="portfolio-construction-using-mvo" class="level3">
+<h3 class="anchored" data-anchor-id="portfolio-construction-using-mvo">3. Portfolio Construction using MVO</h3>
+<p>With the returns DataFrame ready, we can now construct an optimal portfolio using <strong><a href="https://riskfolio-lib.readthedocs.io/en/latest/">Riskfolio-Lib</a></strong>. Mean-Variance Optimization (MVO) is a mathematical framework that solves for the portfolio allocation offering the <strong>highest expected return for a given level of risk</strong>.</p>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li><strong>Create a Portfolio Object:</strong> Start by creating a portfolio object from <strong>Riskfolio-Lib</strong>. This object takes the <code>returns</code> DataFrame as an input.</li>
+<li><strong>Config Estimation Methods:</strong> Since the returns dataframe is sourced from historical price data, we configure both mean and covariance estimation methods to use historical statistics.</li>
+<li><strong>Set model parameters:</strong>
+<ul>
+<li>model= <code>Classic</code> : Refers to classical Mean-Variance Optimization (MVO)</li>
+<li>rm= <code>MV</code>: Risk measure set to variance (Minimizing Variance)</li>
+<li>obj= <code>Sharpe</code>: Optimization objective set to maximize the Sharpe Ratio (risk-adjusted return)</li>
+<li>hist = True: Use historical scenarios for risk measures that depend on scenarios</li>
+<li>annual_rf= 0.0312: The Annual risk-free rate in Canada (2024 - 2025)</li>
+<li>daily_rf : Annual risk-free rate converted to daily risk-free rate</li>
+</ul></li>
+<li><strong>Set Constraints:</strong>
+<ul>
+<li>Constraints ensure the portfolio remains diversified and avoids overconcentration in specific assets.</li>
+<li><strong>Maximum Position Size:</strong> In this portfolio, I set a constraint where no single asset can exceed 30% of the portfolio allocation.</li>
+<li><strong>Minimum Position Size:</strong> In this portfolio, I set a constraint where no single asset can be below 1% of the portfolio allocation. This is to ensure that all assets get some allocation.</li>
+</ul></li>
+<li><strong>Get optimal portfolio weights:</strong>
+<ul>
+<li>The port.optimization method in Riskfolio-Lib uses a mathematical optimization library called <code>CVXPY</code> to return the optimal portfolio weights.</li>
+<li>This is a convex optimization problem, meaning it is computationally efficient and guarantees a global optimum.</li>
+</ul></li>
+</ol>
+<div id="01f4a923" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pd.options.display.float_format <span class="op">=</span> <span class="st">'</span><span class="sc">{:.2f}</span><span class="st">'</span>.<span class="bu">format</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Portfolio Object</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>port <span class="op">=</span> rp.Portfolio(returns<span class="op">=</span>returns)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the estimation methods for expected returns and covariance</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>method_mu <span class="op">=</span> <span class="st">"hist"</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>method_cov <span class="op">=</span> <span class="st">"hist"</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the portfolio object to use these methods</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>port.assets_stats(method_mu<span class="op">=</span>method_mu, method_cov<span class="op">=</span>method_cov)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate optimal portfolio:</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>model<span class="op">=</span><span class="st">'Classic'</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>rm <span class="op">=</span> <span class="st">'MV'</span> <span class="co"># Risk measure used - variance</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> <span class="st">'Sharpe'</span> <span class="co"># Objective function</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>hist <span class="op">=</span> <span class="va">True</span> <span class="co"># Use historical scenarios for risk measures that depend on scenarios</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>annual_rf <span class="op">=</span> <span class="fl">0.0312</span> <span class="co"># Annual risk-free rate</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>daily_rf <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> annual_rf) <span class="op">**</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">252</span>) <span class="op">-</span> <span class="dv">1</span> <span class="co"># Convert to daily risk-free rate</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Set Constraints </span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>asset_classes <span class="op">=</span> pd.read_excel(<span class="st">"../data/portfolio_opt.xlsb"</span>, sheet_name<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>constraints <span class="op">=</span> pd.read_excel(<span class="st">"../data/portfolio_opt.xlsb"</span>, sheet_name<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>A, B <span class="op">=</span> rp.assets_constraints(constraints, asset_classes)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>port.ainequality <span class="op">=</span> A</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>port.binequality <span class="op">=</span> B</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># mean-variance optimization framework</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> port.optimization(model<span class="op">=</span>model, </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>                      rm<span class="op">=</span>rm, </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>                      obj<span class="op">=</span>obj, </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>                      rf<span class="op">=</span>daily_rf, </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>                      hist<span class="op">=</span>hist) </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Display Weights</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      weights
+AAPL     0.17
+AGG      0.01
+GLD      0.30
+JNJ      0.01
+JPM      0.23
+KO       0.01
+MSFT     0.01
+PG       0.22
+TSLA     0.02
+VNQ      0.01
+XOM      0.01</code></pre>
+</div>
+</div>
+</section>
+<section id="visualization-displaying-results-through-allocation-breakdowns-and-efficient-frontiers" class="level3">
+<h3 class="anchored" data-anchor-id="visualization-displaying-results-through-allocation-breakdowns-and-efficient-frontiers">4. Visualization: Displaying results through allocation breakdowns and efficient frontiers</h3>
+<p>Visualization is a key step in understanding and communicating the outcome of portfolio optimization. In this section, I’ll introduce some of the built in visualisations that Riskfolio-Lib has to help us understand our optimal portfolio. These visuals help illustrate the practical implications of MVO.</p>
+<section id="visualising-portfolio-weights" class="level4">
+<h4 class="anchored" data-anchor-id="visualising-portfolio-weights">Visualising Portfolio Weights</h4>
+<ul>
+<li>We can visualise the portfolio weights (<code>w</code>) using a donut chart</li>
+<li>Riskfolio-Lib has a built in method called rp.plot_pie() that does this for us.</li>
+</ul>
+<p><strong>Key Observations:</strong></p>
+<p>The portfolio has made sizable allocations to the following assets:</p>
+<ul>
+<li>GLD (30%): Gold plays a significant role in the portfolio due to its diversification benefits. Its returns has lower correlations to those of stocks. This helps reduce overall portfolio risk and makes it an attractive choice for stability.</li>
+<li>Proctor &amp; Gamble (22.2%): A stable, defensive consumer goods stock.</li>
+<li>JP Morgan (22.8%): Exposure to the financial sector.</li>
+<li>Apple (16.9%): Exposure to the technology sector.</li>
+</ul>
+<div id="a49c2ee4" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the portfolio weights determined by MVO</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> rp.plot_pie(w<span class="op">=</span>w, title<span class="op">=</span><span class="st">'Portfolio allocation (using Sharpe MVO)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="portfolio_optimisation_files/figure-html/cell-6-output-1.png" width="781" height="587" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="visualising-risk-contribution" class="level4">
+<h4 class="anchored" data-anchor-id="visualising-risk-contribution">Visualising Risk Contribution</h4>
+<ul>
+<li>We can also assess the portfolio’s risk contribution per asset</li>
+<li>Riskfolio-Lib has a built in method called rp.plot_risk_con() that creates a bar chart.</li>
+<li>Risk contribution provides insight into whether the portfolio’s risk is diversified or concentrated in specific assets.</li>
+</ul>
+<div id="116091e1" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the risk contributions of each stock</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> rp.plot_risk_con(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    w,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    cov<span class="op">=</span>port.cov, <span class="co">#Portfolio's covariance matrix</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    returns<span class="op">=</span>port.returns, <span class="co">#Portfolio returns</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    rm<span class="op">=</span><span class="st">"MV"</span>, <span class="co"># Risk measure used - variance</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    rf<span class="op">=</span>daily_rf</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="portfolio_optimisation_files/figure-html/cell-7-output-1.png" width="971" height="587" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="visualising-the-efficient-frontier" class="level4">
+<h4 class="anchored" data-anchor-id="visualising-the-efficient-frontier">Visualising The Efficient Frontier</h4>
+<ul>
+<li>The <strong>Efficient Frontier</strong> is arguably the most instructive visualization in Mean-Variance Optimization.</li>
+<li>It represents the set of portfolios that offer the highest expected return for a given level of risk.</li>
+<li>Each point along the efficient frontier corresponds to a portfolio optimized for a specific target return or level of risk, demonstrating the trade-off between risk and return.</li>
+<li>In the EF below, the optimal portfolio (‘w’), which maximises the <strong>sharpe ratio</strong>, is marked with a red star.</li>
+</ul>
+<p><strong>Steps:</strong></p>
+<ol type="1">
+<li><strong>Create the points of the frontier:</strong> Use the port.efficient_frontier() method. This method calculates a range of portfolios by varying the risk or return targets, ensuring the results span the entire efficient frontier.</li>
+<li><strong>Visualise the efficient frontier:</strong> Use the rp.plot_frontier() method to plot the efficient frontier and highlight the optimal portfolio.</li>
+</ol>
+<div id="76627190" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create the points of the frontier</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> <span class="dv">50</span> <span class="co"># Number of points of the frontier</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>frontier <span class="op">=</span> port.efficient_frontier(model<span class="op">=</span>model, rm<span class="op">=</span>rm, points<span class="op">=</span>points, rf<span class="op">=</span>daily_rf, hist<span class="op">=</span>hist)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the efficient frontier</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> <span class="st">'Max Risk Adjusted Return Portfolio'</span> <span class="co"># Title of optimal portfolio</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> port.mu <span class="co"># Expected return of portfolio</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>cov <span class="op">=</span> port.cov <span class="co"># Covariance matrix</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>returns <span class="op">=</span> port.returns <span class="co"># Returns of the assets</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> rp.plot_frontier(w_frontier<span class="op">=</span>frontier, mu<span class="op">=</span>mu, cov<span class="op">=</span>cov, returns<span class="op">=</span>port.returns, rm<span class="op">=</span>rm,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                      rf<span class="op">=</span>daily_rf, alpha<span class="op">=</span><span class="fl">0.05</span>, cmap<span class="op">=</span><span class="st">'viridis'</span>, w<span class="op">=</span>w, label<span class="op">=</span>label,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                      marker<span class="op">=</span><span class="st">'*'</span>, s<span class="op">=</span><span class="dv">16</span>, c<span class="op">=</span><span class="st">'r'</span>, height<span class="op">=</span><span class="dv">6</span>, width<span class="op">=</span><span class="dv">10</span>, ax<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="portfolio_optimisation_files/figure-html/cell-8-output-1.png" width="971" height="587" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="takeaways" class="level3">
+<h3 class="anchored" data-anchor-id="takeaways">5. Takeaways</h3>
+<p>In this tutorial, we explored how to construct an optimal portfolio using Mean-Variance Optimization (MVO) with Riskfolio-Lib. By following a systematic approach, we successfully applied MVO for portfolio management. Here are some key takeaways:</p>
+<ol type="1">
+<li><p><strong>Diversification is Key:</strong> The principle of “not putting all your eggs in one basket” is at the core of portfolio optimization. MVO helps ensure that portfolios are well-diversified across assets, reducing the impact of individual asset volatility.</p></li>
+<li><p><strong>Systematic Allocation:</strong> MVO uses mathematical optimization to take emotions out of investment decisions, allocating capital in a way that balances risk and return efficiently.</p></li>
+<li><p><strong>Efficient Frontier Insights:</strong> The efficient frontier visualizes the trade-off between risk and return, offering a roadmap for constructing portfolios that align with an investor’s risk tolerance and return expectations.</p></li>
+<li><p><strong>Constraints Matter:</strong> Constraints like maximum position sizes (e.g., no more than 30% in one asset) and minimum allocations (e.g., at least 1% per asset) play an important role in making portfolios realistic and implementable.</p></li>
+<li><p><strong>How Often Should You Run MVO?:</strong> It depends. But I offer three reasonable suggestions.</p></li>
+</ol>
+<ul>
+<li><strong>Annually:</strong> For most retail investors, running MVO once a year strikes a good balance between maintaining an optimal allocation and minimizing transaction costs.</li>
+<li><strong>Semi-Annually or Quarterly:</strong> In volatile markets or for portfolios with high turnover, rebalancing more frequently can help align the portfolio with changing market dynamics.</li>
+<li><strong>Threshold-Based Rebalancing:</strong> Alternatively, rebalance only when allocations deviate significantly (e.g.&nbsp;by more than 5% from the target weights).</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

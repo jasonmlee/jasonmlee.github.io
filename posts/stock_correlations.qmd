@@ -1,6 +1,10 @@
 ---
 title: "Calculating Stock Correlations"
-reading_time: "1 min"
+description: "A toy project that explores visualising stock return correlations"
+author: Jason Lee
+reading_time: "5 min"
+jupyter: finance
+weight: 4
 ---
 
 ```{python}
@@ -26,7 +30,7 @@ assets.sort()
 
 # Downloading data
 data = yf.download(assets, start = start, end = end)
-data = data.loc[:, ('Adj Close')]
+data = data.loc[:, ('Close')]
 data.columns = assets
 
 data
