@@ -22,21 +22,20 @@ In this tutorial, we’ll explore how to perform mean-variance optimization (MVO
 Before jumping into the code we should first get a high level understanding of MVO. 
 Mean-Variance Optimization (MVO), introduced by Harry Markowitz in 1952, plays a critical role in portfolio management by providing a systematic framework for balancing risk and return. 
 MVO helps investors construct a portfolio that **maximizes expected return for a given level of risk**.
-Simply put, MVO is a great tool that helps investors efficiently achieve diversification such that they don’t put all their eggs in one basket. 
-MVO is widely used by professionals and institutions to systematically manage investment portfolios. 
+Simply put, MVO is a great tool that helps investors efficiently achieve diversification such that they don’t put all their eggs in one basket.
 
 ### Background
 I’m Jason Lee, a Chartered Financial Analyst (CFA) with over five years of experience in the financial industry. 
-Currently, I’m pursuing a Master of Data Science at the University of British Columbia. 
-While I’m not a financial advisor and this tutorial isn’t financial advice, I aim to share a practical framework that people can use to test their ideas and improve their investing. 
-Keep in mind that all investing involves risk, so approach these concepts with caution.
+Currently, I’m pursuing a Master of Data Science at the University of British Columbia to strengthen my technical skillset and complement my finance background. </br></br>
+
+This tutorial is not financial advice, nor am I a financial advisor. Instead, my goal is to share a practical framework for applying data-driven techniques to portfolio optimization. Keep in mind that all investing involves risk, so approach these concepts with caution.
 
 ### Workflow
-1. Problem Definition: Allocating Investments Efficiently
-2. Imports
-3. Data Collection: Retreiving data from yfinance (Yahoo finance)
-4. Portfolio Construction: Using Riskfolio-Lib to create efficient portfolios
-5. Visualization: Displaying results through efficient frontiers and allocation breakdowns
+0. Problem Definition: Allocating Investments Efficiently
+1. Imports
+2. Data Collection: Retreiving data from yfinance (Yahoo finance)
+3. Portfolio Construction: Using Riskfolio-Lib to create efficient portfolios
+4. Visualization: Displaying results through efficient frontiers and allocation breakdowns
 
 ### 0. Problem Definition: Allocating Investments Efficiently
 Investing involves more than just selecting stocks—it’s about determining the right mix of investments to achieve your financial goals while managing risk.
@@ -46,7 +45,7 @@ This balance is hard to acheive because:
 2. **Complex Interactions:** The performance of assets is rarely independent. Correlations between assets can amplify or reduce portfolio risk.
 3. **Allocation Decisions:** Determining how much money to allocate to each asset in a way that achieves an efficient trade-off between risk and return is not always intuitive.
 
-To illustrate the concept of diversification and optimal allocation, we’ll use a sample portfolio. This portfolio includes a diverse mix of stocks, gold, real estate, and bonds to represent different asset classes. By applying Mean-Variance Optimization (MVO), we’ll determine how to allocate investments efficiently.
+To illustrate the concept of diversification and optimal allocation, we’ll use a sample portfolio. This portfolio includes a diverse mix of stocks, gold, real estate, and bonds to represent different asset classes.
 
 ```{python}
 #| echo: false
@@ -65,7 +64,7 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 ```
 
-### 2. Data Collection / Wrangling
+### 2. Data Collection: Retreiving data from yfinance (Yahoo finance)
 To apply Mean-Variance Optimization (MVO) effectively, we first need to gather historical price data for the assets in our sample portfolio. We can do this using the [yfinance](https://pypi.org/project/yfinance/) library. While its data coverage may not match that of premium providers, yfinance is an excellent free resource for beginners learning quantitative finance concepts.
 
 **Steps:**
@@ -230,7 +229,7 @@ ax = rp.plot_frontier(w_frontier=frontier, mu=mu, cov=cov, returns=port.returns,
 
 ```
 
-### 5. Takeaways
+### Takeaways
 In this tutorial, we explored how to construct an optimal portfolio using Mean-Variance Optimization (MVO) with Riskfolio-Lib. 
 By following a systematic approach, we successfully applied MVO for portfolio management. Here are some key takeaways:
 
@@ -244,7 +243,7 @@ MVO uses mathematical optimization to take emotions out of investment decisions,
 The efficient frontier visualizes the trade-off between risk and return, offering a roadmap for constructing portfolios that align with an investor’s risk tolerance and return expectations.
 
 4. **Constraints Matter:**
-Constraints like maximum position sizes (e.g., no more than 30% in one asset) and minimum allocations (e.g., at least 1% per asset) play an important role in making portfolios realistic and implementable.
+Constraints like maximum position sizes (e.g., no more than 30% in one asset) and minimum allocations (e.g., at least 1% per asset) play an important role in making portfolios realistic and implementable. 
 
 5. **How Often Should You Run MVO?:**
 It depends. But I offer three reasonable suggestions.
@@ -252,3 +251,12 @@ It depends. But I offer three reasonable suggestions.
 - **Annually:** For most retail investors, running MVO once a year strikes a good balance between maintaining an optimal allocation and minimizing transaction costs.
 - **Semi-Annually or Quarterly:** In volatile markets or for portfolios with high turnover, rebalancing more frequently can help align the portfolio with changing market dynamics.
 - **Threshold-Based Rebalancing:** Alternatively, rebalance only when allocations deviate significantly (e.g. by more than 5% from the target weights).
+
+
+### References
+
+1. yfinance Documentation: https://pypi.org/project/yfinance/
+2. Riskfolio-Lib Documentation: https://riskfolio-lib.readthedocs.io/en/latest/
+3. Markowitz, H. (1952). Portfolio Selection. The Journal of Finance, 7(1), 77–91. JSTOR
+4. Canadian 3-Month Treasury Bill Yield: https://ycharts.com/indicators/canada_3_month_treasury_bill_yield
+5. Bodie, Z., Kane, A., & Marcus, A. J. (2020). Investments (12th ed.). McGraw-Hill Education.

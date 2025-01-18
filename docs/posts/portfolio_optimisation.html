@@ -157,10 +157,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow">Workflow</a></li>
   <li><a href="#problem-definition-allocating-investments-efficiently" id="toc-problem-definition-allocating-investments-efficiently" class="nav-link" data-scroll-target="#problem-definition-allocating-investments-efficiently">0. Problem Definition: Allocating Investments Efficiently</a></li>
   <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports">1. Imports</a></li>
-  <li><a href="#data-collection-wrangling" id="toc-data-collection-wrangling" class="nav-link" data-scroll-target="#data-collection-wrangling">2. Data Collection / Wrangling</a></li>
+  <li><a href="#data-collection-retreiving-data-from-yfinance-yahoo-finance" id="toc-data-collection-retreiving-data-from-yfinance-yahoo-finance" class="nav-link" data-scroll-target="#data-collection-retreiving-data-from-yfinance-yahoo-finance">2. Data Collection: Retreiving data from yfinance (Yahoo finance)</a></li>
   <li><a href="#portfolio-construction-using-mvo" id="toc-portfolio-construction-using-mvo" class="nav-link" data-scroll-target="#portfolio-construction-using-mvo">3. Portfolio Construction using MVO</a></li>
   <li><a href="#visualization-displaying-results-through-allocation-breakdowns-and-efficient-frontiers" id="toc-visualization-displaying-results-through-allocation-breakdowns-and-efficient-frontiers" class="nav-link" data-scroll-target="#visualization-displaying-results-through-allocation-breakdowns-and-efficient-frontiers">4. Visualization: Displaying results through allocation breakdowns and efficient frontiers</a></li>
-  <li><a href="#takeaways" id="toc-takeaways" class="nav-link" data-scroll-target="#takeaways">5. Takeaways</a></li>
+  <li><a href="#takeaways" id="toc-takeaways" class="nav-link" data-scroll-target="#takeaways">Takeaways</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -209,15 +210,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="what-is-mean-variance-optimization-mvo" class="level3">
 <h3 class="anchored" data-anchor-id="what-is-mean-variance-optimization-mvo">What is Mean-Variance Optimization (MVO)?</h3>
-<p>Before jumping into the code we should first get a high level understanding of MVO. Mean-Variance Optimization (MVO), introduced by Harry Markowitz in 1952, plays a critical role in portfolio management by providing a systematic framework for balancing risk and return. MVO helps investors construct a portfolio that <strong>maximizes expected return for a given level of risk</strong>. Simply put, MVO is a great tool that helps investors efficiently achieve diversification such that they don’t put all their eggs in one basket. MVO is widely used by professionals and institutions to systematically manage investment portfolios.</p>
+<p>Before jumping into the code we should first get a high level understanding of MVO. Mean-Variance Optimization (MVO), introduced by Harry Markowitz in 1952, plays a critical role in portfolio management by providing a systematic framework for balancing risk and return. MVO helps investors construct a portfolio that <strong>maximizes expected return for a given level of risk</strong>. Simply put, MVO is a great tool that helps investors efficiently achieve diversification such that they don’t put all their eggs in one basket.</p>
 </section>
 <section id="background" class="level3">
 <h3 class="anchored" data-anchor-id="background">Background</h3>
-<p>I’m Jason Lee, a Chartered Financial Analyst (CFA) with over five years of experience in the financial industry. Currently, I’m pursuing a Master of Data Science at the University of British Columbia. While I’m not a financial advisor and this tutorial isn’t financial advice, I aim to share a practical framework that people can use to test their ideas and improve their investing. Keep in mind that all investing involves risk, so approach these concepts with caution.</p>
+<p>I’m Jason Lee, a Chartered Financial Analyst (CFA) with over five years of experience in the financial industry. Currently, I’m pursuing a Master of Data Science at the University of British Columbia to strengthen my technical skillset and complement my finance background. <br><br></p>
+<p>This tutorial is not financial advice, nor am I a financial advisor. Instead, my goal is to share a practical framework for applying data-driven techniques to portfolio optimization. Keep in mind that all investing involves risk, so approach these concepts with caution.</p>
 </section>
 <section id="workflow" class="level3">
 <h3 class="anchored" data-anchor-id="workflow">Workflow</h3>
-<ol type="1">
+<ol start="0" type="1">
 <li>Problem Definition: Allocating Investments Efficiently</li>
 <li>Imports</li>
 <li>Data Collection: Retreiving data from yfinance (Yahoo finance)</li>
@@ -233,9 +235,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Complex Interactions:</strong> The performance of assets is rarely independent. Correlations between assets can amplify or reduce portfolio risk.</li>
 <li><strong>Allocation Decisions:</strong> Determining how much money to allocate to each asset in a way that achieves an efficient trade-off between risk and return is not always intuitive.</li>
 </ol>
-<p>To illustrate the concept of diversification and optimal allocation, we’ll use a sample portfolio. This portfolio includes a diverse mix of stocks, gold, real estate, and bonds to represent different asset classes. By applying Mean-Variance Optimization (MVO), we’ll determine how to allocate investments efficiently.</p>
-<div id="b58d8022" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display" data-execution_count="1">
+<p>To illustrate the concept of diversification and optimal allocation, we’ll use a sample portfolio. This portfolio includes a diverse mix of stocks, gold, real estate, and bonds to represent different asset classes.</p>
+<div id="6703dd5d" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -324,15 +326,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="imports" class="level3">
 <h3 class="anchored" data-anchor-id="imports">1. Imports</h3>
-<div id="3ba289ce" class="cell" data-execution_count="2">
+<div id="aee587d8" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> riskfolio <span class="im">as</span> rp</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yfinance <span class="im">as</span> yf</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="data-collection-wrangling" class="level3">
-<h3 class="anchored" data-anchor-id="data-collection-wrangling">2. Data Collection / Wrangling</h3>
+<section id="data-collection-retreiving-data-from-yfinance-yahoo-finance" class="level3">
+<h3 class="anchored" data-anchor-id="data-collection-retreiving-data-from-yfinance-yahoo-finance">2. Data Collection: Retreiving data from yfinance (Yahoo finance)</h3>
 <p>To apply Mean-Variance Optimization (MVO) effectively, we first need to gather historical price data for the assets in our sample portfolio. We can do this using the <a href="https://pypi.org/project/yfinance/">yfinance</a> library. While its data coverage may not match that of premium providers, yfinance is an excellent free resource for beginners learning quantitative finance concepts.</p>
 <p><strong>Steps:</strong></p>
 <ol type="1">
@@ -345,7 +347,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>For this tutorial, we are using a 1 year time period (Jan 2024 - Jan 2025) to ensure that the portfolio reflects recent market trends and conditions.</li>
 <li>Daily returns provide a granular view of asset behavior, which is well suited for portfolio optimisation.</li>
 </ul>
-<div id="3283f56e" class="cell" data-execution_count="3">
+<div id="5f37000a" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define tickers</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tickers <span class="op">=</span> [<span class="st">'AAPL'</span>, <span class="st">'MSFT'</span>, <span class="st">'JNJ'</span>, <span class="st">'XOM'</span>, <span class="st">'PG'</span>, <span class="st">'JPM'</span>, <span class="st">'TSLA'</span>, <span class="st">'KO'</span>, <span class="st">'GLD'</span>, <span class="st">'VNQ'</span>, <span class="st">'AGG'</span>] </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -356,9 +358,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>returns <span class="op">=</span> data.pct_change().dropna()</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>returns.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>[                       0%                       ][*********             18%                       ]  2 of 11 completed[*********             18%                       ]  2 of 11 completed[*****************     36%                       ]  4 of 11 completed[**********************45%                       ]  5 of 11 completed[**********************55%*                      ]  6 of 11 completed[**********************64%******                 ]  7 of 11 completed[**********************73%**********             ]  8 of 11 completed[**********************82%**************         ]  9 of 11 completed[**********************91%*******************    ]  10 of 11 completed[*********************100%***********************]  11 of 11 completed</code></pre>
+<pre><code>[                       0%                       ][*********             18%                       ]  2 of 11 completed[*************         27%                       ]  3 of 11 completed[*************         27%                       ]  3 of 11 completed[**********************45%                       ]  5 of 11 completed[**********************55%*                      ]  6 of 11 completed[**********************64%******                 ]  7 of 11 completed[**********************64%******                 ]  7 of 11 completed[**********************82%**************         ]  9 of 11 completed[**********************91%*******************    ]  10 of 11 completed[*********************100%***********************]  11 of 11 completed</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 
 
@@ -396,73 +398,73 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2024-01-03</td>
-<td>-0.007488</td>
-<td>0.000506</td>
-<td>-0.008337</td>
-<td>0.006251</td>
-<td>-0.004358</td>
-<td>0.002340</td>
-<td>-0.000728</td>
-<td>-0.006051</td>
-<td>-0.040134</td>
-<td>-0.023901</td>
-<td>0.008402</td>
+<td>-0.01</td>
+<td>0.00</td>
+<td>-0.01</td>
+<td>0.01</td>
+<td>-0.00</td>
+<td>0.00</td>
+<td>-0.00</td>
+<td>-0.01</td>
+<td>-0.04</td>
+<td>-0.02</td>
+<td>0.01</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">2024-01-04</td>
-<td>-0.012700</td>
-<td>-0.004047</td>
-<td>0.001005</td>
-<td>-0.002112</td>
-<td>0.006636</td>
-<td>-0.003335</td>
-<td>-0.007177</td>
-<td>0.005479</td>
-<td>-0.002181</td>
-<td>-0.001839</td>
-<td>-0.008719</td>
+<td>-0.01</td>
+<td>-0.00</td>
+<td>0.00</td>
+<td>-0.00</td>
+<td>0.01</td>
+<td>-0.00</td>
+<td>-0.01</td>
+<td>0.01</td>
+<td>-0.00</td>
+<td>-0.00</td>
+<td>-0.01</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2024-01-05</td>
-<td>-0.004013</td>
-<td>-0.002337</td>
-<td>0.000158</td>
-<td>0.003113</td>
-<td>0.005017</td>
-<td>-0.001506</td>
-<td>-0.000516</td>
-<td>-0.008275</td>
-<td>-0.001849</td>
-<td>-0.002534</td>
-<td>0.003030</td>
+<td>-0.00</td>
+<td>-0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.01</td>
+<td>-0.00</td>
+<td>-0.00</td>
+<td>-0.01</td>
+<td>-0.00</td>
+<td>-0.00</td>
+<td>0.00</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">2024-01-08</td>
-<td>0.024175</td>
-<td>0.003768</td>
-<td>-0.007816</td>
-<td>0.002482</td>
-<td>-0.001451</td>
-<td>0.007374</td>
-<td>0.018872</td>
-<td>0.008615</td>
-<td>0.012464</td>
-<td>0.014317</td>
-<td>-0.016662</td>
+<td>0.02</td>
+<td>0.00</td>
+<td>-0.01</td>
+<td>0.00</td>
+<td>-0.00</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>0.01</td>
+<td>-0.02</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2024-01-09</td>
-<td>-0.002263</td>
-<td>-0.000203</td>
-<td>0.000319</td>
-<td>0.000619</td>
-<td>-0.007906</td>
-<td>-0.001830</td>
-<td>0.002936</td>
-<td>0.004103</td>
-<td>-0.022832</td>
-<td>-0.006716</td>
-<td>-0.012386</td>
+<td>-0.00</td>
+<td>-0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>-0.01</td>
+<td>-0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>-0.02</td>
+<td>-0.01</td>
+<td>-0.01</td>
 </tr>
 </tbody>
 </table>
@@ -499,7 +501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>This is a convex optimization problem, meaning it is computationally efficient and guarantees a global optimum.</li>
 </ul></li>
 </ol>
-<div id="01f4a923" class="cell" data-execution_count="4">
+<div id="1101376d" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pd.options.display.float_format <span class="op">=</span> <span class="st">'</span><span class="sc">{:.2f}</span><span class="st">'</span>.<span class="bu">format</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Portfolio Object</span></span>
@@ -571,7 +573,7 @@ XOM      0.01</code></pre>
 <li>JP Morgan (22.8%): Exposure to the financial sector.</li>
 <li>Apple (16.9%): Exposure to the technology sector.</li>
 </ul>
-<div id="a49c2ee4" class="cell" data-execution_count="5">
+<div id="16c48df7" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the portfolio weights determined by MVO</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> rp.plot_pie(w<span class="op">=</span>w, title<span class="op">=</span><span class="st">'Portfolio allocation (using Sharpe MVO)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -590,7 +592,7 @@ XOM      0.01</code></pre>
 <li>Riskfolio-Lib has a built in method called rp.plot_risk_con() that creates a bar chart.</li>
 <li>Risk contribution provides insight into whether the portfolio’s risk is diversified or concentrated in specific assets.</li>
 </ul>
-<div id="116091e1" class="cell" data-execution_count="6">
+<div id="b97d258e" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the risk contributions of each stock</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> rp.plot_risk_con(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    w,</span>
@@ -621,7 +623,7 @@ XOM      0.01</code></pre>
 <li><strong>Create the points of the frontier:</strong> Use the port.efficient_frontier() method. This method calculates a range of portfolios by varying the risk or return targets, ensuring the results span the entire efficient frontier.</li>
 <li><strong>Visualise the efficient frontier:</strong> Use the rp.plot_frontier() method to plot the efficient frontier and highlight the optimal portfolio.</li>
 </ol>
-<div id="76627190" class="cell" data-execution_count="7">
+<div id="5c38aafe" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create the points of the frontier</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> <span class="dv">50</span> <span class="co"># Number of points of the frontier</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>frontier <span class="op">=</span> port.efficient_frontier(model<span class="op">=</span>model, rm<span class="op">=</span>rm, points<span class="op">=</span>points, rf<span class="op">=</span>daily_rf, hist<span class="op">=</span>hist)</span>
@@ -646,7 +648,7 @@ XOM      0.01</code></pre>
 </section>
 </section>
 <section id="takeaways" class="level3">
-<h3 class="anchored" data-anchor-id="takeaways">5. Takeaways</h3>
+<h3 class="anchored" data-anchor-id="takeaways">Takeaways</h3>
 <p>In this tutorial, we explored how to construct an optimal portfolio using Mean-Variance Optimization (MVO) with Riskfolio-Lib. By following a systematic approach, we successfully applied MVO for portfolio management. Here are some key takeaways:</p>
 <ol type="1">
 <li><p><strong>Diversification is Key:</strong> The principle of “not putting all your eggs in one basket” is at the core of portfolio optimization. MVO helps ensure that portfolios are well-diversified across assets, reducing the impact of individual asset volatility.</p></li>
@@ -660,6 +662,16 @@ XOM      0.01</code></pre>
 <li><strong>Semi-Annually or Quarterly:</strong> In volatile markets or for portfolios with high turnover, rebalancing more frequently can help align the portfolio with changing market dynamics.</li>
 <li><strong>Threshold-Based Rebalancing:</strong> Alternatively, rebalance only when allocations deviate significantly (e.g.&nbsp;by more than 5% from the target weights).</li>
 </ul>
+</section>
+<section id="references" class="level3">
+<h3 class="anchored" data-anchor-id="references">References</h3>
+<ol type="1">
+<li>yfinance Documentation: https://pypi.org/project/yfinance/</li>
+<li>Riskfolio-Lib Documentation: https://riskfolio-lib.readthedocs.io/en/latest/</li>
+<li>Markowitz, H. (1952). Portfolio Selection. The Journal of Finance, 7(1), 77–91. JSTOR</li>
+<li>Canadian 3-Month Treasury Bill Yield: https://ycharts.com/indicators/canada_3_month_treasury_bill_yield</li>
+<li>Bodie, Z., Kane, A., &amp; Marcus, A. J. (2020). Investments (12th ed.). McGraw-Hill Education.</li>
+</ol>
 
 
 </section>
